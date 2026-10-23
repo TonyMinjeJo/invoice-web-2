@@ -1,0 +1,189 @@
+{
+  "tasks": [
+    {
+      "id": "c5f81b1c-d8c5-4f2d-b4d3-42696d119f5b",
+      "name": "Task 002: 견적서 라우트 및 타입 골격 설계",
+      "description": "견적서 공유 페이지의 동적 라우트, 없음 및 오류 상태 파일, 타입 골격, 노션 환경변수 스키마를 준비한다. 공유 식별자 형식은 ROADMAP2 Q1 미결정이므로 파라미터 이름만 정하고 검증 로직은 넣지 않는다. 노션 API 호출, 금액 계산 로직, PDF는 포함하지 않는다.",
+      "notes": "shrimp-rules.md는 라우트 세그먼트 이름을 정하지 않았으므로 estimate를 제안한다. 이름을 바꾸면 shrimp-rules.md 2절도 함께 고친다. 식별자 방식은 ROADMAP2 Q1이며, shrimp-rules.md에서는 Q2로 적혀 있다. 이 작업은 ROADMAP2 번호를 따른다. 작업 파일은 docs/tasks/002-routes-skeleton.md로 만든다. 완료 후 중단하고 추가 지시를 기다린다.",
+      "status": "in_progress",
+      "dependencies": [],
+      "createdAt": "2026-10-23T18:01:51.078Z",
+      "updatedAt": "2026-10-23T18:04:20.819Z",
+      "relatedFiles": [
+        {
+          "path": "src/app/estimate/[shareId]/page.tsx",
+          "type": "CREATE",
+          "description": "공유 페이지 동적 라우트",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/app/estimate/[shareId]/not-found.tsx",
+          "type": "CREATE",
+          "description": "견적서 없음 화면",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/app/estimate/[shareId]/error.tsx",
+          "type": "CREATE",
+          "description": "연동 오류 화면 (use client)",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/app/estimate/[shareId]/loading.tsx",
+          "type": "CREATE",
+          "description": "로딩 Skeleton",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/estimate/types.ts",
+          "type": "CREATE",
+          "description": "Quote, QuoteItem, QuoteSummary 타입",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/env.ts",
+          "type": "TO_MODIFY",
+          "description": "노션 환경변수 스키마 추가",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": ".env.example",
+          "type": "CREATE",
+          "description": "노션 환경변수 예시 (값 없음)",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/components/navigation/main-nav.tsx",
+          "type": "REFERENCE",
+          "description": "navItems 빈 배열 확인",
+          "lineStart": 1,
+          "lineEnd": 60
+        }
+      ],
+      "implementationGuide": "1) src/app/estimate/[shareId]/page.tsx를 만든다. params는 Promise이므로 await 후 사용한다. 빈 안내 화면만 렌더링한다.\n2) 같은 디렉터리에 not-found.tsx, error.tsx(use client, reset 버튼), loading.tsx(shadcn Skeleton)를 만든다. 문구는 한국어로 쓰고 원본 오류 메시지는 노출하지 않는다.\n3) src/lib/estimate/types.ts에 Quote, QuoteItem, QuoteSummary 타입을 정의한다. 금액은 원 단위 정수다. 계산 함수는 만들지 않는다.\n4) src/lib/env.ts에 NOTION_API_KEY, NOTION_DATABASE_ID를 추가하고 루트에 .env.example을 만든다. 값은 비우고 NEXT_PUBLIC_ 접두사는 붙이지 않는다.\n5) navItems는 빈 배열로 둔다. 메뉴를 임의로 추가하지 않는다.\n6) named export를 쓰고 default export는 page, layout, loading, error, not-found에만 쓴다. 상대 경로 import를 쓰지 않는다.",
+      "verificationCriteria": "1) /estimate/[shareId] 접속 시 빈 안내 화면이 렌더링된다. 2) 존재하지 않는 경로에서 not-found 화면이 나온다. 3) env 스키마에 두 변수가 있고 누락 시 변수명을 포함한 오류가 난다. 4) npm run check-all과 npm run build가 통과한다. 5) 390×844 뷰포트에서 가로 스크롤이 없다. 6) NEXT_PUBLIC_ 노션 변수가 없다.",
+      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 002와 Task 003을 완료한다. 목표는 견적서 공유 라우트가 빈 화면으로 렌더링되고, 타입과 노션 환경변수 골격이 준비되며, 노션 DB 속성 → Quote 매핑표와 Zod 스키마 초안이 작성되는 것이다. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외. Task 001은 로드맵에서 완료 표시를 지운 상태이므로 이번 계획에서 제외한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과."
+    },
+    {
+      "id": "ff4d9550-8b55-4d0b-b706-8b32fa780c07",
+      "name": "Task 003: 노션 데이터베이스 스키마 설계 (구현 제외)",
+      "description": "노션 견적서 DB의 속성 목록을 정하고, 속성에서 Quote 타입으로 가는 매핑표와 Zod 스키마 초안을 작성한다. 설계 문서만 만들고 @notionhq/client 설치, API 호출, src/lib/notion 코드는 Phase 3 범위이므로 만들지 않는다.",
+      "notes": "Q4는 실제 DB를 봐야 확정된다. 확인 전에는 확정 표현을 쓰지 않는다. 금액 반올림은 Q2 미결정이므로 기록만 하고 확정하지 않는다. API 키나 실제 고객 정보는 문서에 적지 않는다.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-10-23T18:01:51.078Z",
+      "updatedAt": "2026-10-23T18:01:51.078Z",
+      "relatedFiles": [
+        {
+          "path": "docs/tasks/003-notion-schema-design.md",
+          "type": "CREATE",
+          "description": "스키마 설계 결과 파일",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "docs/ROADMAP2.md",
+          "type": "REFERENCE",
+          "description": "Task 003 명세와 Q4 기준",
+          "lineStart": 133,
+          "lineEnd": 137
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "노션 속성 변경 시 estimate-schema.ts 규칙",
+          "lineStart": 114,
+          "lineEnd": 131
+        }
+      ],
+      "implementationGuide": "1) 노션 견적서 DB를 직접 확인해 속성 이름, 타입, 샘플 값을 기록한다. 확인할 수 없으면 Q4 보류로 표시하고 후보 목록만 적는다.\n2) 속성 후보는 견적 번호, 수신자, 발행일, 유효기간, 항목명, 수량, 단가, 상태(임시/발행)다.\n3) 속성 → Quote 매핑표를 작성한다. 열은 노션 속성명, 노션 타입, Quote 필드, 필수 여부, 변환 규칙이다.\n4) 상태 속성의 값(임시, 발행)과 조회 가능 조건을 명시한다. 임시 상태는 조회 불가다.\n5) Zod 스키마 초안을 Markdown 코드 블록으로 쓴다. 실제 파일은 만들지 않는다.\n6) 결과를 docs/tasks/003-notion-schema-design.md에 기록한다.",
+      "verificationCriteria": "1) 매핑표의 모든 Quote 필드에 노션 속성 또는 파생 규칙이 있다. 2) 상태별 조회 가능 여부가 명시되어 있다. 3) Q4 확정 여부가 표시되어 있다. 4) 문서에 API 키나 고객 정보가 없다. 5) src/lib/notion 파일이 생성되지 않았다.",
+      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 002와 Task 003을 완료한다. 목표는 견적서 공유 라우트가 빈 화면으로 렌더링되고, 타입과 노션 환경변수 골격이 준비되며, 노션 DB 속성 → Quote 매핑표와 Zod 스키마 초안이 작성되는 것이다. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외. Task 001은 로드맵에서 완료 표시를 지운 상태이므로 이번 계획에서 제외한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과."
+    },
+    {
+      "id": "8c31f8fe-1ef3-4de7-b8c9-9e8d94c7dd9c",
+      "name": "Task 001: 프로젝트 기본 세팅 및 공통 레이아웃 구성 (검증 및 마무리)",
+      "description": "Next.js 15.5.3 App Router, TailwindCSS v4, shadcn/ui 설정, 루트 레이아웃, 헤더, 푸터, 메인 및 모바일 내비게이션, 테마 provider와 토글, 공통 UI 컴포넌트 설치가 이미 구현되어 있는지 확인하고 빠진 부분만 보완한다. 새 기능은 추가하지 않는다. ROADMAP2.md의 Task 001 완료 표시는 지워진 상태이므로 검증이 끝나면 다시 표시한다.",
+      "notes": "shrimp-rules.md에 따라 src/components/ui/에는 비즈니스 로직을 두지 않는다. 깨지는 부분을 고칠 때는 해당 파일만 수정한다. 완료 표시는 check-all과 build가 통과한 뒤에만 붙인다. 작업 파일은 docs/tasks/001-project-setup-verify.md로 만든다.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-10-23T18:02:46.614Z",
+      "updatedAt": "2026-10-23T18:02:46.614Z",
+      "relatedFiles": [
+        {
+          "path": "src/app/layout.tsx",
+          "type": "REFERENCE",
+          "description": "루트 레이아웃, ThemeProvider, Toaster",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": "src/components/layout/header.tsx",
+          "type": "REFERENCE",
+          "description": "헤더, use client",
+          "lineStart": 1,
+          "lineEnd": 120
+        },
+        {
+          "path": "src/components/layout/footer.tsx",
+          "type": "REFERENCE",
+          "description": "푸터",
+          "lineStart": 1,
+          "lineEnd": 60
+        },
+        {
+          "path": "src/components/navigation/main-nav.tsx",
+          "type": "REFERENCE",
+          "description": "메인 내비게이션, navItems 빈 배열",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": "src/components/navigation/mobile-nav.tsx",
+          "type": "REFERENCE",
+          "description": "모바일 내비게이션",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": "src/components/providers/theme-provider.tsx",
+          "type": "REFERENCE",
+          "description": "next-themes provider",
+          "lineStart": 1,
+          "lineEnd": 30
+        },
+        {
+          "path": "src/components/theme-toggle.tsx",
+          "type": "REFERENCE",
+          "description": "테마 전환 토글",
+          "lineStart": 1,
+          "lineEnd": 60
+        },
+        {
+          "path": "src/components/ui/",
+          "type": "REFERENCE",
+          "description": "shadcn 공통 컴포넌트 (button, card, badge, table 포함)",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "package.json",
+          "type": "REFERENCE",
+          "description": "Next.js 15.5.3 버전 고정 확인",
+          "lineStart": 1,
+          "lineEnd": 100
+        }
+      ],
+      "implementationGuide": "1) src/app/layout.tsx, src/components/layout/header.tsx, footer.tsx, src/components/navigation/main-nav.tsx, mobile-nav.tsx, src/components/providers/theme-provider.tsx, src/components/theme-toggle.tsx가 있는지 확인한다.\n2) src/components/ui/ 아래 button, card, badge, table 등 shadcn 컴포넌트가 있는지 확인한다. 없는 것은 npx shadcn@latest add로 추가한다.\n3) package.json에서 Next.js 버전이 15.5.3인지 확인하고 바꾸지 않는다.\n4) 테마는 next-themes만 쓰고 localStorage를 직접 다루지 않는다. 아이콘은 lucide-react만 쓴다.\n5) npm run check-all과 npm run build를 실행하고 결과를 기록한다.\n6) 모든 항목이 통과하면 ROADMAP2.md의 Task 001에 완료 표시를 다시 붙인다.",
+      "verificationCriteria": "1) npm run check-all이 통과한다. 2) npm run build가 통과한다. 3) 홈 페이지가 데스크톱과 390×844 모바일에서 가로 스크롤 없이 렌더링된다. 4) 테마 토글로 라이트와 다크가 전환된다. 5) ROADMAP2.md의 Task 001에 완료 표시가 다시 붙어 있다.",
+      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 001 검증, Task 002, Task 003을 완료한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외."
+    }
+  ]
+}
