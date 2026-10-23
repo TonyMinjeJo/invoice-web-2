@@ -5,10 +5,8 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 
-const navItems = [
-  { title: '홈', href: '/' },
-  { title: '로그인', href: '/login' },
-]
+// 내비게이션 항목은 페이지를 구현할 때 추가합니다.
+const navItems: { title: string; href: string }[] = []
 
 interface MobileNavProps {
   onClose: () => void

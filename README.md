@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 견적서 웹 뷰어
 
-## Getting Started
+노션 데이터베이스에 입력한 견적서를 클라이언트가 웹에서 확인하고 PDF로 다운로드하는 MVP 웹 애플리케이션입니다.
 
-First, run the development server:
+## 🎯 프로젝트 개요
+
+**목적**: 노션에 작성한 견적서를 별도 입력 없이 웹으로 공유하고, PDF 파일로 저장할 수 있게 한다.
+**범위**: 견적서 조회, 금액 합계 표시, PDF 다운로드 (조회 전용, 로그인 없음)
+**사용자**: 노션으로 견적서를 작성해 전달하는 1인 발행자와, 공유 링크로 견적서를 확인하는 클라이언트
+
+## 📱 주요 페이지
+
+1. **견적서 조회** - 노션 견적 데이터를 불러와 내용과 금액을 표시하고 PDF 다운로드 버튼을 제공
+2. **견적서 없음 안내** - 존재하지 않는 견적 링크로 접속했을 때 안내
+
+## ⚡ 핵심 기능
+
+- F001 노션 견적 데이터 연동: 노션 데이터베이스에서 견적 정보와 항목 조회
+- F002 견적서 내용 웹 표시: 견적 헤더와 항목 표 표시
+- F003 금액 합계 계산: 소계, 부가세(10%), 총액 표시
+- F004 견적서 PDF 다운로드: 조회 중인 견적서를 A4 PDF로 저장
+- F005 견적서 없음 안내: 잘못된 견적 링크 안내
+
+## 🛠️ 기술 스택
+
+- Framework: Next.js 15.5 (프로젝트 고정 15.5.3, App Router + Turbopack)
+- Runtime: React 19.1 + TypeScript 5
+- Styling: TailwindCSS v4 + shadcn/ui (new-york)
+- Icons: Lucide React
+- Validation: Zod 4
+- 노션 연동: @notionhq/client 5.x
+- PDF 생성: @react-pdf/renderer 4.x
+
+> 노션 연동과 PDF 생성 라이브러리는 아직 설치되지 않았습니다. 기능 구현 시 추가합니다.
+
+## 🚀 시작하기
 
 ```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# 빌드
+npm run build
+
+# 전체 검사 (타입, 린트, 포맷)
+npm run check-all
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📖 문서
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [PRD 문서](./docs/PRD.md) - 상세 요구사항
+- [개발 가이드](./CLAUDE.md) - 개발 지침

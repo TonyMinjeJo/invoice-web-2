@@ -9,9 +9,8 @@ interface NavItem {
   href: string
 }
 
-const navItems: NavItem[] = [
-  { title: '홈', href: '/' },
-]
+// 내비게이션 항목은 페이지를 구현할 때 추가합니다.
+const navItems: NavItem[] = []
 
 export function MainNav() {
   const pathname = usePathname()
