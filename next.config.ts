@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
+  // PDF 폰트는 process.cwd() 기준 경로로 읽는다. 배포 번들에 폰트 파일이 빠지지 않도록 명시한다.
+  outputFileTracingIncludes: {
+    '/estimate/[shareId]/pdf': ['./src/lib/pdf/fonts/**/*'],
+  },
   async headers() {
     return [
       {
