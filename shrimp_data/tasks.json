@@ -5,10 +5,10 @@
       "name": "Task 002: 견적서 라우트 및 타입 골격 설계",
       "description": "견적서 공유 페이지의 동적 라우트, 없음 및 오류 상태 파일, 타입 골격, 노션 환경변수 스키마를 준비한다. 공유 식별자 형식은 ROADMAP2 Q1 미결정이므로 파라미터 이름만 정하고 검증 로직은 넣지 않는다. 노션 API 호출, 금액 계산 로직, PDF는 포함하지 않는다.",
       "notes": "shrimp-rules.md는 라우트 세그먼트 이름을 정하지 않았으므로 estimate를 제안한다. 이름을 바꾸면 shrimp-rules.md 2절도 함께 고친다. 식별자 방식은 ROADMAP2 Q1이며, shrimp-rules.md에서는 Q2로 적혀 있다. 이 작업은 ROADMAP2 번호를 따른다. 작업 파일은 docs/tasks/002-routes-skeleton.md로 만든다. 완료 후 중단하고 추가 지시를 기다린다.",
-      "status": "in_progress",
+      "status": "completed",
       "dependencies": [],
       "createdAt": "2026-10-23T18:01:51.078Z",
-      "updatedAt": "2026-10-23T18:04:20.819Z",
+      "updatedAt": "2026-10-26T13:35:30.563Z",
       "relatedFiles": [
         {
           "path": "src/app/estimate/[shareId]/page.tsx",
@@ -69,17 +69,19 @@
       ],
       "implementationGuide": "1) src/app/estimate/[shareId]/page.tsx를 만든다. params는 Promise이므로 await 후 사용한다. 빈 안내 화면만 렌더링한다.\n2) 같은 디렉터리에 not-found.tsx, error.tsx(use client, reset 버튼), loading.tsx(shadcn Skeleton)를 만든다. 문구는 한국어로 쓰고 원본 오류 메시지는 노출하지 않는다.\n3) src/lib/estimate/types.ts에 Quote, QuoteItem, QuoteSummary 타입을 정의한다. 금액은 원 단위 정수다. 계산 함수는 만들지 않는다.\n4) src/lib/env.ts에 NOTION_API_KEY, NOTION_DATABASE_ID를 추가하고 루트에 .env.example을 만든다. 값은 비우고 NEXT_PUBLIC_ 접두사는 붙이지 않는다.\n5) navItems는 빈 배열로 둔다. 메뉴를 임의로 추가하지 않는다.\n6) named export를 쓰고 default export는 page, layout, loading, error, not-found에만 쓴다. 상대 경로 import를 쓰지 않는다.",
       "verificationCriteria": "1) /estimate/[shareId] 접속 시 빈 안내 화면이 렌더링된다. 2) 존재하지 않는 경로에서 not-found 화면이 나온다. 3) env 스키마에 두 변수가 있고 누락 시 변수명을 포함한 오류가 난다. 4) npm run check-all과 npm run build가 통과한다. 5) 390×844 뷰포트에서 가로 스크롤이 없다. 6) NEXT_PUBLIC_ 노션 변수가 없다.",
-      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 002와 Task 003을 완료한다. 목표는 견적서 공유 라우트가 빈 화면으로 렌더링되고, 타입과 노션 환경변수 골격이 준비되며, 노션 DB 속성 → Quote 매핑표와 Zod 스키마 초안이 작성되는 것이다. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외. Task 001은 로드맵에서 완료 표시를 지운 상태이므로 이번 계획에서 제외한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과."
+      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 002와 Task 003을 완료한다. 목표는 견적서 공유 라우트가 빈 화면으로 렌더링되고, 타입과 노션 환경변수 골격이 준비되며, 노션 DB 속성 → Quote 매핑표와 Zod 스키마 초안이 작성되는 것이다. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외. Task 001은 로드맵에서 완료 표시를 지운 상태이므로 이번 계획에서 제외한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과.",
+      "summary": "Task 002 완료. /estimate/[shareId] 빈 안내 화면(HTTP 200), 390×844 가로 스크롤 없음, env 누락 시 변수명 포함 오류, check-all과 build 통과, 노션 변수 클라이언트 미노출을 확인했다. 세그먼트 안의 not-found 연결은 식별자 조회(Task 009·011) 전까지 보류하며 문서에 사유를 기록했다. .env.example은 .gitignore 예외를 추가해 커밋 대상이 되도록 했다. 검증 결과는 docs/tasks/002-routes-skeleton.md에, 완료 표시는 ROADMAP2 Task 002에 반영했다.",
+      "completedAt": "2026-10-26T13:35:30.561Z"
     },
     {
       "id": "ff4d9550-8b55-4d0b-b706-8b32fa780c07",
       "name": "Task 003: 노션 데이터베이스 스키마 설계 (구현 제외)",
       "description": "노션 견적서 DB의 속성 목록을 정하고, 속성에서 Quote 타입으로 가는 매핑표와 Zod 스키마 초안을 작성한다. 설계 문서만 만들고 @notionhq/client 설치, API 호출, src/lib/notion 코드는 Phase 3 범위이므로 만들지 않는다.",
       "notes": "Q4는 실제 DB를 봐야 확정된다. 확인 전에는 확정 표현을 쓰지 않는다. 금액 반올림은 Q2 미결정이므로 기록만 하고 확정하지 않는다. API 키나 실제 고객 정보는 문서에 적지 않는다.",
-      "status": "pending",
+      "status": "completed",
       "dependencies": [],
       "createdAt": "2026-10-23T18:01:51.078Z",
-      "updatedAt": "2026-10-23T18:01:51.078Z",
+      "updatedAt": "2026-10-26T13:49:00.968Z",
       "relatedFiles": [
         {
           "path": "docs/tasks/003-notion-schema-design.md",
@@ -105,17 +107,19 @@
       ],
       "implementationGuide": "1) 노션 견적서 DB를 직접 확인해 속성 이름, 타입, 샘플 값을 기록한다. 확인할 수 없으면 Q4 보류로 표시하고 후보 목록만 적는다.\n2) 속성 후보는 견적 번호, 수신자, 발행일, 유효기간, 항목명, 수량, 단가, 상태(임시/발행)다.\n3) 속성 → Quote 매핑표를 작성한다. 열은 노션 속성명, 노션 타입, Quote 필드, 필수 여부, 변환 규칙이다.\n4) 상태 속성의 값(임시, 발행)과 조회 가능 조건을 명시한다. 임시 상태는 조회 불가다.\n5) Zod 스키마 초안을 Markdown 코드 블록으로 쓴다. 실제 파일은 만들지 않는다.\n6) 결과를 docs/tasks/003-notion-schema-design.md에 기록한다.",
       "verificationCriteria": "1) 매핑표의 모든 Quote 필드에 노션 속성 또는 파생 규칙이 있다. 2) 상태별 조회 가능 여부가 명시되어 있다. 3) Q4 확정 여부가 표시되어 있다. 4) 문서에 API 키나 고객 정보가 없다. 5) src/lib/notion 파일이 생성되지 않았다.",
-      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 002와 Task 003을 완료한다. 목표는 견적서 공유 라우트가 빈 화면으로 렌더링되고, 타입과 노션 환경변수 골격이 준비되며, 노션 DB 속성 → Quote 매핑표와 Zod 스키마 초안이 작성되는 것이다. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외. Task 001은 로드맵에서 완료 표시를 지운 상태이므로 이번 계획에서 제외한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과."
+      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 002와 Task 003을 완료한다. 목표는 견적서 공유 라우트가 빈 화면으로 렌더링되고, 타입과 노션 환경변수 골격이 준비되며, 노션 DB 속성 → Quote 매핑표와 Zod 스키마 초안이 작성되는 것이다. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외. Task 001은 로드맵에서 완료 표시를 지운 상태이므로 이번 계획에서 제외한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과.",
+      "summary": "Task 003 완료. CSV 내보내기 기준으로 invoices·Items 속성 이름을 확정하고 속성 → Quote 매핑표, 상태 규칙(대기=draft, 발행=issued), 항목 정제 규칙, 금액은 항목 합계 기준을 docs/tasks/003-notion-schema-design.md에 기록했다. Zod 초안은 샘플 항목과 빈 행으로 임시 검증했다. types.ts를 clientName, QuoteItem.id, notionTotalAmount 기준으로 갱신했고, check-all과 build가 통과한다. src/lib/notion은 만들지 않았다. Q4는 부분 확정으로 표시했다. 속성 노션 타입과 상태 옵션 '발행'은 API 확인과 사용자 추가가 필요하다. shrimp-rules.md의 Estimate 용어는 Quote와 맞춰야 한다.",
+      "completedAt": "2026-10-26T13:49:00.966Z"
     },
     {
       "id": "8c31f8fe-1ef3-4de7-b8c9-9e8d94c7dd9c",
       "name": "Task 001: 프로젝트 기본 세팅 및 공통 레이아웃 구성 (검증 및 마무리)",
       "description": "Next.js 15.5.3 App Router, TailwindCSS v4, shadcn/ui 설정, 루트 레이아웃, 헤더, 푸터, 메인 및 모바일 내비게이션, 테마 provider와 토글, 공통 UI 컴포넌트 설치가 이미 구현되어 있는지 확인하고 빠진 부분만 보완한다. 새 기능은 추가하지 않는다. ROADMAP2.md의 Task 001 완료 표시는 지워진 상태이므로 검증이 끝나면 다시 표시한다.",
       "notes": "shrimp-rules.md에 따라 src/components/ui/에는 비즈니스 로직을 두지 않는다. 깨지는 부분을 고칠 때는 해당 파일만 수정한다. 완료 표시는 check-all과 build가 통과한 뒤에만 붙인다. 작업 파일은 docs/tasks/001-project-setup-verify.md로 만든다.",
-      "status": "pending",
+      "status": "completed",
       "dependencies": [],
       "createdAt": "2026-10-23T18:02:46.614Z",
-      "updatedAt": "2026-10-23T18:02:46.614Z",
+      "updatedAt": "2026-10-26T13:33:52.513Z",
       "relatedFiles": [
         {
           "path": "src/app/layout.tsx",
@@ -183,7 +187,512 @@
       ],
       "implementationGuide": "1) src/app/layout.tsx, src/components/layout/header.tsx, footer.tsx, src/components/navigation/main-nav.tsx, mobile-nav.tsx, src/components/providers/theme-provider.tsx, src/components/theme-toggle.tsx가 있는지 확인한다.\n2) src/components/ui/ 아래 button, card, badge, table 등 shadcn 컴포넌트가 있는지 확인한다. 없는 것은 npx shadcn@latest add로 추가한다.\n3) package.json에서 Next.js 버전이 15.5.3인지 확인하고 바꾸지 않는다.\n4) 테마는 next-themes만 쓰고 localStorage를 직접 다루지 않는다. 아이콘은 lucide-react만 쓴다.\n5) npm run check-all과 npm run build를 실행하고 결과를 기록한다.\n6) 모든 항목이 통과하면 ROADMAP2.md의 Task 001에 완료 표시를 다시 붙인다.",
       "verificationCriteria": "1) npm run check-all이 통과한다. 2) npm run build가 통과한다. 3) 홈 페이지가 데스크톱과 390×844 모바일에서 가로 스크롤 없이 렌더링된다. 4) 테마 토글로 라이트와 다크가 전환된다. 5) ROADMAP2.md의 Task 001에 완료 표시가 다시 붙어 있다.",
-      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 001 검증, Task 002, Task 003을 완료한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외."
+      "analysisResult": "Phase 1 \"애플리케이션 골격 구축\"의 Task 001 검증, Task 002, Task 003을 완료한다. Phase 1 DoD: 견적서 공유 라우트 빈 렌더링, npm run check-all과 npm run build 통과. MVP 전제: 노션이 단일 원본, 웹은 조회 전용, 로그인 없이 공유 링크 접근, 부가세 10%, 승인·서명·이메일 발송 제외.",
+      "summary": "Task 001 검증 완료. 기존 레이아웃, 헤더, 푸터, 내비게이션, 테마 provider와 토글, shadcn UI 컴포넌트가 이미 구현되어 있었고 빠진 기능은 없었다. check-all 실패 원인은 CRLF 줄바꿈 파일의 Prettier 검사로, 포맷만 정규화했다. check-all과 build 통과, 데스크톱과 390×844에서 가로 스크롤 없음, 라이트와 다크 전환 확인. 결과는 docs/tasks/001-project-setup-verify.md에 기록했고 ROADMAP2 Task 001에 ✅를 붙였다.",
+      "completedAt": "2026-10-26T13:33:52.511Z"
+    },
+    {
+      "id": "59652ed1-2d98-4b13-8a6c-4382cc0c0e58",
+      "name": "Task 004: 견적 계산 로직 구현 (더미 데이터 기반)",
+      "description": "Task 002에서 정의한 src/lib/estimate/types.ts의 Quote, QuoteItem, QuoteSummary 타입을 사용해 견적 계산 순수 함수를 구현하고, 더미 견적서 데이터 2~3종을 작성한다. 계산 항목은 항목별 금액(수량 × 단가), 공급가액 합계, 부가세 10%, 총액이다. 원 단위 반올림 규칙은 Q2 미결정이므로 확정하지 않고 교체 가능한 단일 함수로 분리한다. 노션 API 호출, UI 변경, PDF는 포함하지 않는다.",
+      "notes": "Q2(반올림 규칙)가 확정되면 roundWon만 수정한다. 노션 연동(Phase 3)과 화면 연결(Task 005)은 이 Task에서 하지 않는다. shrimp-rules.md의 Estimate 용어는 Quote로 맞춘다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "c5f81b1c-d8c5-4f2d-b4d3-42696d119f5b"
+        }
+      ],
+      "createdAt": "2026-10-27T12:14:35.984Z",
+      "updatedAt": "2026-10-27T12:32:33.590Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/estimate/types.ts",
+          "type": "DEPENDENCY",
+          "description": "Quote, QuoteItem, QuoteSummary 타입 (Task 002에서 정의)",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": "src/lib/estimate/calculate.ts",
+          "type": "CREATE",
+          "description": "계산 순수 함수 및 roundWon",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/estimate/dummy-quotes.ts",
+          "type": "CREATE",
+          "description": "더미 견적서 데이터 2~3종",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "docs/ROADMAP2.md",
+          "type": "REFERENCE",
+          "description": "Task 004 명세와 TC-004-01~06 체크리스트 (152~165행)",
+          "lineStart": 152,
+          "lineEnd": 165
+        },
+        {
+          "path": "docs/tasks/004-quote-calculation.md",
+          "type": "CREATE",
+          "description": "작업 기록 파일",
+          "lineStart": 1,
+          "lineEnd": 1
+        }
+      ],
+      "implementationGuide": "1) src/lib/estimate/calculate.ts를 만든다 (named export만 사용). 함수: calculateLineAmount(quantity: number, unitPrice: number): number, calculateSummary(items: QuoteItem[]): QuoteSummary. 금액은 원 단위 정수다.\n2) 부가세 계산과 반올림은 roundWon(value: number): number 한 함수에 모은다. 현재 구현은 Math.round 기반 임시 규칙이며, 주석에 Q2 미확정임을 명시한다.\n3) 입력 검증: 수량 또는 단가가 빈 값(null/undefined/NaN)이거나 음수인 항목은 계산에서 제외하고 제외된 항목 목록을 결과에 담는다. 예외를 던지지 않는다.\n4) 항목 0개이면 모든 금액을 0으로 반환한다.\n5) src/lib/estimate/dummy-quotes.ts에 Quote 더미 데이터 2~3종을 만든다. (a) 항목 2개: 100,000원 × 2, 50,000원 × 1 (b) 항목 다수 (c) 항목 0개 또는 할인 없음 케이스.\n6) 단위 테스트는 프로젝트에 테스트 러너가 없으면 추가하지 않고, 검증 스크립트 대신 check-all 통과와 TC 체크리스트 수동 확인으로 대체한다. 결과는 docs/tasks/004-quote-calculation.md에 기록한다.",
+      "verificationCriteria": "1) TC-004-01: 항목 (100,000×2, 50,000×1)에서 공급가액 250,000, 부가세 25,000, 총액 275,000을 반환한다. 2) TC-004-02: 음수나 빈 값 항목이 계산에서 제외되고 예외가 발생하지 않는다. 3) TC-004-03: 항목 0개에서 세 금액이 모두 0이다. 4) TC-004-04: 10억 원 규모 입력에서 부가세가 정확하다(정수 오차 없음). 5) TC-004-05: 반올림 경계값 입력이 roundWon 한 함수를 통해서만 처리된다. 6) TC-004-06: 더미 데이터 2~3종에 같은 함수를 적용하며 네트워크 호출이 없다. 7) npm run check-all과 npm run build가 통과한다.",
+      "analysisResult": "MVP 견적서 웹 뷰어(invoice-web-2). 노션이 단일 원본이며 웹은 조회 전용이다. 로그인 없이 공유 링크로 접근하고 부가세는 10%다. ROADMAP2 Phase 2(UI/UX 완성, 더미 데이터 활용)의 Task 004는 견적 계산 로직을 더미 데이터 기반으로 구현하는 것이다. 계산 함수는 순수 함수로 src/lib/estimate에 두고, UI와 노션 연동은 이 Task 범위에 넣지 않는다. 반올림 규칙은 미결정 Q2이므로 확정하지 않고 교체 가능한 단일 함수로 분리한다.",
+      "summary": "Task 004 완료. calculate.ts에 항목 금액, 공급가액, 부가세 10%, 총액 순수 함수를 구현했고 잘못된 항목은 계산에서 제외해 ID를 반환한다. 더미 견적서 3종으로 TC-004-01·03·04를 스크립트로 확인했다. 반올림 규칙(Q2)은 미확정이라 roundWon에 임시 규칙과 TODO만 남겼고, TC-004-05는 보류로 docs/tasks/004-quote-calculation.md에 기록했다.",
+      "completedAt": "2026-10-27T12:32:33.588Z"
+    },
+    {
+      "id": "a85b151e-4b1b-423c-9d6c-cc7b014c3bde",
+      "name": "Task 005: 견적서 상세 화면 UI 구현",
+      "description": "src/app/estimate/[shareId]/page.tsx(Task 002에서 만든 골격)를 더미 데이터로 채운다. 서버 컴포넌트로 src/components/estimate/ 아래에 헤더 정보(발행자, 수신자, 견적 번호, 발행일, 유효기간), 항목 표(line-items-table.tsx: md 이상은 table, 모바일은 카드형 목록), 합계 요약(quote-summary.tsx: 공급가액, 부가세, 총액 3줄), 상단 PDF 버튼 자리(비활성 또는 자리만)를 만든다. 금액은 컴포넌트에서 계산하지 않고 calculate.ts 결과만 표시한다.",
+      "notes": "Task 004(calculate.ts와 더미 데이터)가 먼저 끝나야 한다. 금액 반올림은 Q 미결정이므로 임의로 정하지 않는다. 식별자 조회는 Task 009·011까지 보류한다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "59652ed1-2d98-4b13-8a6c-4382cc0c0e58"
+        }
+      ],
+      "createdAt": "2026-10-27T12:18:34.728Z",
+      "updatedAt": "2026-10-27T12:32:39.644Z",
+      "relatedFiles": [
+        {
+          "path": "src/app/estimate/[shareId]/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "더미 데이터와 상세 컴포넌트 연결",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": "src/components/estimate/",
+          "type": "CREATE",
+          "description": "견적서 뷰어 컴포넌트 폴더",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/estimate/calculate.ts",
+          "type": "DEPENDENCY",
+          "description": "Task 004 계산 결과 사용",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": "src/components/ui/table.tsx",
+          "type": "REFERENCE",
+          "description": "항목 표 재사용",
+          "lineStart": 1,
+          "lineEnd": 120
+        },
+        {
+          "path": "docs/ROADMAP2.md",
+          "type": "REFERENCE",
+          "description": "Task 005 명세와 TC-005-01~04 (167~180행)",
+          "lineStart": 167,
+          "lineEnd": 180
+        }
+      ],
+      "implementationGuide": "1) src/components/estimate/quote-header.tsx, line-items-table.tsx, quote-summary.tsx를 만든다 (named export, 서버 컴포넌트). 2) page.tsx는 더미 데이터 1건을 가져와 calculateSummary 결과를 props로 넘긴다. 3) 기존 shadcn card, table, badge를 재사용한다. 4) 모바일 카드 전환은 Tailwind 반응형 클래스로 처리하고 두 마크업을 함께 렌더링하지 않는다(hidden/md:block 방식). 5) 파일은 300줄 이하로 유지한다.",
+      "verificationCriteria": "TC-005-01: 상세 화면에 발행자, 수신자, 견적 번호, 발행일, 항목 표, 합계 3줄, PDF 버튼이 표시된다. TC-005-02: 항목 1개와 20개에서 행 수가 데이터와 일치하고 긴 항목명이 줄바꿈된다. TC-005-03: 390×844에서 가로 스크롤이 없고 항목이 카드형으로 바뀐다. TC-005-04: 합계 3줄이 calculate.ts 결과와 같다. npm run check-all과 npm run build 통과.",
+      "analysisResult": "ROADMAP2 Phase 2(UI/UX 완성, 더미 데이터 활용)의 나머지 작업. 노션 연동, 식별자 검증, PDF는 제외한다. 금액은 calculate.ts 결과만 쓴다. 부가세 10%. 메뉴 추가 없음.",
+      "summary": "Task 005 완료. page.tsx를 더미 견적서와 calculate.ts 결과에 연결했고, 헤더, 항목 표(md 이상)와 카드(모바일), 합계 3줄, 비활성 PDF 버튼을 서버 컴포넌트로 구현했다. 390px과 1280px 모두 가로 스크롤이 없고 금액이 계산 결과와 일치한다. 20개 항목 케이스는 브라우저로 확인하지 않았고, 발행자 값은 임시 더미다.",
+      "completedAt": "2026-10-27T12:32:39.641Z"
+    },
+    {
+      "id": "99658fd7-486b-424b-8293-4c6810f702f6",
+      "name": "Task 006: 예외 상태 화면 구현",
+      "description": "not-found.tsx, error.tsx, loading.tsx의 문구와 레이아웃을 채우고, 더미 상태(임시, 유효기간 만료, 연동 오류)에 맞는 안내 컴포넌트를 src/components/estimate/ 아래에 만든다. 원본 오류 메시지는 노출하지 않는다.",
+      "notes": "Task 005 컴포넌트 폴더와 카드 스타일을 재사용한다. 노션 상태 값(대기, 발행) 매핑은 Phase 3에서 다룬다. 식별자 기반 notFound() 연결은 Task 011까지 보류한다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "a85b151e-4b1b-423c-9d6c-cc7b014c3bde"
+        }
+      ],
+      "createdAt": "2026-10-27T12:18:34.728Z",
+      "updatedAt": "2026-10-27T12:53:09.170Z",
+      "relatedFiles": [
+        {
+          "path": "src/app/estimate/[shareId]/not-found.tsx",
+          "type": "TO_MODIFY",
+          "description": "견적서 없음 화면",
+          "lineStart": 1,
+          "lineEnd": 60
+        },
+        {
+          "path": "src/app/estimate/[shareId]/error.tsx",
+          "type": "TO_MODIFY",
+          "description": "연동 오류 화면, use client, reset",
+          "lineStart": 1,
+          "lineEnd": 60
+        },
+        {
+          "path": "src/app/estimate/[shareId]/loading.tsx",
+          "type": "TO_MODIFY",
+          "description": "Skeleton 로딩 화면",
+          "lineStart": 1,
+          "lineEnd": 60
+        },
+        {
+          "path": "src/components/estimate/quote-unavailable.tsx",
+          "type": "CREATE",
+          "description": "조회 불가 상태 안내",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "docs/ROADMAP2.md",
+          "type": "REFERENCE",
+          "description": "Task 006 명세와 TC-006-01~04 (182~192행)",
+          "lineStart": 182,
+          "lineEnd": 192
+        }
+      ],
+      "implementationGuide": "1) src/components/estimate/quote-unavailable.tsx(임시 또는 유효기간 만료 안내)를 만든다. 2) not-found.tsx에 견적서 없음 안내와 홈 링크를 둔다. 3) error.tsx는 use client로 만들고 재시도 버튼(reset)과 안내 문구를 둔다. 4) loading.tsx는 shadcn skeleton으로 상세 화면 골격을 보여준다. 5) 상태 값은 더미 데이터 3종으로 확인한다.",
+      "verificationCriteria": "TC-006-01: 더미 상태 3종 각각 맞는 문구와 레이아웃이 나온다. TC-006-02: 없는 경로에서 not-found가 나오고 홈 링크가 동작한다. TC-006-03: 연동 오류에서 재시도 안내가 나오고 원본 오류 메시지가 보이지 않는다. TC-006-04: 390×844에서 각 상태 화면에 가로 스크롤이 없다. npm run check-all과 npm run build 통과.",
+      "analysisResult": "ROADMAP2 Phase 2(UI/UX 완성, 더미 데이터 활용)의 나머지 작업. 노션 연동, 식별자 검증, PDF는 제외한다. 금액은 calculate.ts 결과만 쓴다. 부가세 10%. 메뉴 추가 없음.",
+      "summary": "Task 006 완료. 임시·유효기간 만료 안내 화면을 QuoteUnavailable로 구현해 페이지에 연결했다. 없는 키는 notFound()로 not-found 화면을 보여주고 HTTP 404가 나온다. 연동 오류 화면은 임시 오류로 재시도 버튼과 원본 메시지 미노출을 확인한 뒤 제거했다. loading.tsx는 사용자 결정으로 제거했다(스켈레톤 대신 404 우선). 상태 키 맵은 임시 더미이며 Task 009·011에서 교체한다.",
+      "completedAt": "2026-10-27T12:53:09.168Z"
+    },
+    {
+      "id": "17dcfc7d-557e-4a6c-b44d-c3f2f4bd0770",
+      "name": "Task 007: 공통 UI 및 접근성 기준 적용",
+      "description": "헤더, 푸터, 견적서 화면의 시맨틱 마크업(제목 계층, 표 caption), 색 대비, 포커스 스타일, 다크 모드 가독성을 점검하고 보완한다. 검색 엔진 노출 설정(noindex)은 Q 미결정이므로 적용하지 않고 보류로 기록한다.",
+      "notes": "shadcn ui 파일은 순수 UI만 수정한다. 노션 호출과 비즈니스 로직을 넣지 않는다. 작업 결과는 docs/tasks/007-shared-ui-a11y.md에 기록한다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "a85b151e-4b1b-423c-9d6c-cc7b014c3bde"
+        },
+        {
+          "taskId": "99658fd7-486b-424b-8293-4c6810f702f6"
+        }
+      ],
+      "createdAt": "2026-10-27T12:18:34.728Z",
+      "updatedAt": "2026-10-27T12:54:05.974Z",
+      "relatedFiles": [
+        {
+          "path": "src/components/layout/header.tsx",
+          "type": "TO_MODIFY",
+          "description": "헤더 시맨틱 점검",
+          "lineStart": 1,
+          "lineEnd": 120
+        },
+        {
+          "path": "src/components/layout/footer.tsx",
+          "type": "TO_MODIFY",
+          "description": "푸터 시맨틱 점검",
+          "lineStart": 1,
+          "lineEnd": 60
+        },
+        {
+          "path": "src/app/globals.css",
+          "type": "TO_MODIFY",
+          "description": "색 변수와 포커스 스타일",
+          "lineStart": 1,
+          "lineEnd": 200
+        },
+        {
+          "path": "docs/ROADMAP2.md",
+          "type": "REFERENCE",
+          "description": "Task 007 명세 (194~198행)",
+          "lineStart": 194,
+          "lineEnd": 198
+        }
+      ],
+      "implementationGuide": "1) 견적서 화면의 h1 하나, 하위 제목 계층을 확인한다. 2) 항목 표에 caption(sr-only 허용)을 추가한다. 3) 포커스 링(focus-visible)이 버튼과 링크에 보이는지 확인한다. 4) 라이트와 다크 모드에서 텍스트 대비를 점검하고 CSS 변수로만 고친다. 5) 검색 노출 설정은 코드에 넣지 않고 작업 파일에 보류 사유를 적는다.",
+      "verificationCriteria": "1) 견적서 화면에 h1이 하나이고 제목 계층이 건너뛰지 않는다. 2) 항목 표에 caption이 있다. 3) 키보드 Tab 이동 시 모든 상호작용 요소에 포커스 링이 보인다. 4) 라이트와 다크 모드에서 본문 텍스트가 읽힌다. 5) noindex 설정은 코드에 없고 보류 사유가 기록되어 있다. 6) npm run check-all과 npm run build 통과.",
+      "analysisResult": "ROADMAP2 Phase 2(UI/UX 완성, 더미 데이터 활용)의 나머지 작업. 노션 연동, 식별자 검증, PDF는 제외한다. 금액은 calculate.ts 결과만 쓴다. 부가세 10%. 메뉴 추가 없음.",
+      "summary": "Task 007 완료. 견적서 화면의 h1 하나, 제목 계층, 항목 표 caption(sr-only), 포커스 링, 라이트·다크 대비, 390px 가로 스크롤 없음을 확인했다. 결과는 docs/tasks/007-shared-ui-a11y.md에 기록했다. noindex는 Q5 미확정이라 코드에 적용하지 않고 보류로 기록했다. 대비와 포커스는 샘플 확인이므로 정식 측정은 Task 015에서 한다. check-all은 통과했다.",
+      "completedAt": "2026-10-27T12:54:05.972Z"
+    },
+    {
+      "id": "34c3280b-94a4-435b-b83c-1e30872a1d05",
+      "name": "Task 008: 노션 API 클라이언트 설정",
+      "description": "src/lib/notion/client.ts를 새로 만든다. server-only 패키지로 서버 전용 경계를 강제하고, @notionhq/client 5.28.0과 server-only를 정확한 버전(^ 없음)으로 설치한다. 환경변수는 src/lib/env.ts의 getNotionEnv()로 받고, 누락 시 변수명만 담은 오류가 나게 한다. 설치 후 node_modules의 타입 정의로 Client 옵션(notionVersion, timeoutMs, retry)과 쿼리 메서드(data_sources.query 또는 databases.query)를 확인하고, 확인 결과를 docs/tasks의 008 작업 파일에 기록한다. 문서 예시를 근거 없이 쓰지 않는다.",
+      "notes": "차단 요소: .env.local에 NOTION_API_KEY와 NOTION_DATABASE_ID가 있어야 TC-008-01을 실행할 수 있다. 없으면 구현과 check-all, build까지만 하고 실데이터 TC는 보류로 기록한다. Q4(status 타입과 발행 옵션 이름)는 이 Task에서 판단하지 않고 Task 009에서 API 응답으로 확인한다. 웹 코드는 노션에 쓰기 호출을 하지 않는다. shrimp-rules 5-2, 6-3 규칙을 따른다.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-10-27T13:39:28.077Z",
+      "updatedAt": "2026-10-27T13:55:10.202Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/notion/client.ts",
+          "type": "CREATE",
+          "description": "서버 전용 Notion 클라이언트 생성",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/env.ts",
+          "type": "REFERENCE",
+          "description": "getNotionEnv() 재사용, 새 검증 로직은 만들지 않음",
+          "lineStart": 1,
+          "lineEnd": 44
+        },
+        {
+          "path": "package.json",
+          "type": "TO_MODIFY",
+          "description": "@notionhq/client 5.28.0과 server-only를 정확한 버전으로 추가",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "5-2 노션 연동 규칙, 6-3 버전 고정 규칙",
+          "lineStart": 124,
+          "lineEnd": 181
+        }
+      ],
+      "implementationGuide": "1) npm view @notionhq/client@5.28.0 version으로 존재를 확인한 뒤 npm install --save-exact @notionhq/client@5.28.0 server-only 로 설치한다. 2) src/lib/notion/client.ts: import 'server-only'; import { Client } from '@notionhq/client'; import { getNotionEnv } from '@/lib/env'; const { apiKey } = getNotionEnv(); export const notion = new Client({ auth: apiKey, notionVersion: 타입으로 확인한 값, timeoutMs: NOTION_TIMEOUT_MS, retry: { maxRetries: 2 } }). 3) 타임아웃과 재시도 상수는 같은 파일 상단에 둔다. 4) npm run build 후 .next 산출물에서 API 키 문자열이 없는지 검색한다.",
+      "verificationCriteria": "check-all과 build 통과. 환경변수 누락 시 변수명만 포함된 오류 확인(TC-008-02). 빌드 산출물과 HTML 응답에 API 키 문자열이 없음(TC-008-04). 설치한 버전의 쿼리 API 형태를 작업 파일에 기록. 키가 없으면 TC-008-01과 TC-008-03은 보류로 기록.",
+      "analysisResult": "Phase 3 (실제 노션 연동) 최종 목표: 노션에 입력한 견적서를 공유 링크 /estimate/[shareId]로 조회하고 PDF로 내려받는다. 웹은 조회 전용이며 로그인과 쓰기 기능은 없다. 금액은 src/lib/estimate/calculate.ts 한 곳에서만 계산하고 부가세 10%, 원 단위 정수, 부가세 내림(Q2 확정)을 따른다. 노션 모듈은 src/lib/notion/ 아래 서버 전용으로 둔다. 순서: 008, 009, 011(페이지를 실데이터 경로로 교체하고 임시와 만료 차단을 포함), 010(더미 제거와 캐싱), 012(PDF), 013(예외 안정화). 막힌 요소: NOTION_API_KEY와 NOTION_DATABASE_ID, 테스트용 노션 데이터, 미결정 Q1(식별자 기본값 노션 페이지 ID), Q3(PDF 방식과 한글 폰트), Q4(status 타입과 발행 옵션), Q9(테스트 러너). 각 Task 완료 후 중단하고 사용자 지시를 기다린다.",
+      "summary": "Task 008 완료. src/lib/notion/client.ts에서 server-only를 import하고 getNotionEnv()로 환경변수를 지연 로드하는 getNotionClient()를 만들었다. @notionhq/client 5.28.0과 server-only 0.0.1을 정확한 버전으로 고정했고, notionVersion 2025-09-03, timeoutMs 10초, maxRetries 2를 SDK 옵션으로 설정했다. 쿼리는 databases.query가 아니라 dataSources.query(data_source_id 필요)임을 타입으로 확인해 008 문서에 기록했다. TC-008-01~03은 실연결로 통과했다. 이번 세션에서 check-all(typecheck, lint)과 build가 통과했고, 빌드 산출물에 API 키 값이 0건임을 확인했다(TC-008-04). 프로덕션 서버에서 주요 경로 상태 코드를 확인했다(TC-008-05). 화면 레이아웃의 시각 회귀는 수행하지 않았다. 009 문서와 shrimp_data/tasks.json에 Prettier 경고가 남아 있으나 이번 작업 범위 밖이다.",
+      "completedAt": "2026-10-27T13:55:10.199Z"
+    },
+    {
+      "id": "0b1d4461-fc41-40a7-85c3-3d6a5451de32",
+      "name": "Task 009: 노션 견적서 조회 및 데이터 정규화",
+      "description": "src/lib/notion/estimate-schema.ts(Zod 매핑)와 src/lib/notion/get-estimate.ts(조회)를 만든다. 공유 식별자(노션 페이지 ID)는 하이픈 유무와 관계없이 32자리 16진수로 정규화한 뒤 조회한다. invoices 페이지의 속성을 Quote 타입으로 변환하고, Items DB를 invoices relation 조건으로 쿼리해 항목을 가져온다(페이지네이션 포함). 반환 타입은 기존 src/lib/estimate/types.ts의 Quote다. Estimate라는 새 타입 이름은 만들지 않는다.",
+      "notes": "확인 필요 1: 항목 정제 규칙 충돌. docs/tasks/003의 규칙 2는 일부만 빈 항목을 검증 실패로 보고, calculate.ts는 잘못된 항목을 계산에서 제외한다. 사용자 결정 전에는 003 규칙을 따른다. 확인 필요 2: Q4. status 속성이 status 타입인지 select인지, 발행 옵션 이름이 무엇인지 실제 응답으로 확인하고 작업 파일에 기록한다. 확인 필요 3: 노션 number 속성에는 텍스트를 넣을 수 없으므로 TC-009-04는 실데이터로 재현하지 않고 Zod 단위 검증으로 대체한다. ROADMAP 수정은 사용자 승인 후에 한다. 실데이터 TC는 사용자가 테스트 데이터를 제공해야 실행할 수 있고, 데이터 생성은 사용자 확인 후에만 한다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "34c3280b-94a4-435b-b83c-1e30872a1d05"
+        }
+      ],
+      "createdAt": "2026-10-27T13:39:28.077Z",
+      "updatedAt": "2026-10-27T14:05:26.709Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/notion/estimate-schema.ts",
+          "type": "CREATE",
+          "description": "노션 응답을 Quote와 QuoteItem으로 바꾸는 Zod 매핑",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/notion/get-estimate.ts",
+          "type": "CREATE",
+          "description": "식별자 정규화, 페이지 조회, 항목 페이지네이션",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/estimate/types.ts",
+          "type": "REFERENCE",
+          "description": "Quote, QuoteItem, QuoteStatus 타입",
+          "lineStart": 1,
+          "lineEnd": 40
+        },
+        {
+          "path": "docs/tasks/003-notion-schema-design.md",
+          "type": "REFERENCE",
+          "description": "속성에서 Quote로 가는 매핑표와 항목 정제 규칙",
+          "lineStart": 20,
+          "lineEnd": 90
+        },
+        {
+          "path": "src/lib/estimate/calculate.ts",
+          "type": "DEPENDENCY",
+          "description": "잘못된 항목 제외 로직과 정제 규칙 충돌 확인",
+          "lineStart": 1,
+          "lineEnd": 55
+        }
+      ],
+      "implementationGuide": "1) normalizeShareId(input: string): string | null — 하이픈 제거, /^[0-9a-f]{32}$/i 검사, 실패 시 null. 2) getInvoice(id): notion의 페이지 조회 결과를 InvoiceSchema(Zod)로 파싱해 Quote의 헤더 필드를 만든다. 3) listItems(invoiceId): Items 데이터 소스를 filter의 relation contains invoiceId 조건으로 쿼리하고, has_more와 next_cursor가 끝날 때까지 반복한다. 행은 ItemSchema로 파싱한다. 4) 항목명, 수량, 단가가 모두 비어 있는 행은 버린다. 5) 검증 실패는 명시적 결과 타입으로 반환하고, 실패한 필드 이름만 서버 로그에 남긴다. 6) 상태 매핑: 발행 옵션은 issued, 그 외는 draft.",
+      "verificationCriteria": "단위 검증은 임시 스크립트(Q9 결정 전까지)로 샘플 응답을 넣어 확인한다: 정상, 필수값 누락, 금액 음수, 빈 항목 행 제거. 실데이터가 있으면 TC-009-01, 02, 06, 07을 실행한다. 정제 규칙 결정과 Q4 확인 결과를 작업 파일에 기록한다. check-all과 build 통과.",
+      "analysisResult": "Phase 3 (실제 노션 연동) 최종 목표: 노션에 입력한 견적서를 공유 링크 /estimate/[shareId]로 조회하고 PDF로 내려받는다. 웹은 조회 전용이며 로그인과 쓰기 기능은 없다. 금액은 src/lib/estimate/calculate.ts 한 곳에서만 계산하고 부가세 10%, 원 단위 정수, 부가세 내림(Q2 확정)을 따른다. 노션 모듈은 src/lib/notion/ 아래 서버 전용으로 둔다. 순서: 008, 009, 011(페이지를 실데이터 경로로 교체하고 임시와 만료 차단을 포함), 010(더미 제거와 캐싱), 012(PDF), 013(예외 안정화). 막힌 요소: NOTION_API_KEY와 NOTION_DATABASE_ID, 테스트용 노션 데이터, 미결정 Q1(식별자 기본값 노션 페이지 ID), Q3(PDF 방식과 한글 폰트), Q4(status 타입과 발행 옵션), Q9(테스트 러너). 각 Task 완료 후 중단하고 사용자 지시를 기다린다.",
+      "summary": "Task 009 구현 완료. estimate-schema.ts에 속성 읽기, Zod 검증, 항목 매핑(빈 행 skip, 일부만 채운 행 invalid), 헤더 매핑을 구현했고 get-estimate.ts에 식별자 정규화, 데이터 소스 찾기, 페이지 조회, 항목 100개 단위 페이지네이션을 구현했다. 반환 타입은 기존 Quote를 쓴다. 임시 스크립트로 13개 단위 검증(정상, 필수값 누락, 음수와 소수 수량, 빈 행 제거, 상태 매핑, 식별자 정규화)을 모두 통과했고 check-all의 typecheck와 lint, build가 통과했다. 실데이터 TC-009-01, 02, 02b는 이전 세션에서 통과했다. 남은 사항: 실제 상태 옵션에 발행이 없어(대기, 거절, 승인) 구현 가이드대로 발행만 issued로 두면 현재 모든 견적서가 draft가 된다. 이 결정은 사용자에게 확인이 필요하다. 항목 정제 규칙(003 규칙 2와 calculate.ts 제외 로직)의 충돌도 사용자 결정이 필요하다. TC-009-03, 05, 06, 07, 08, 09는 테스트 데이터가 없어 보류다.",
+      "completedAt": "2026-10-27T14:05:26.707Z"
+    },
+    {
+      "id": "d298c5a9-ef11-43be-9641-d86588a23e30",
+      "name": "Task 011: 공유 링크 접근 제어 구현",
+      "description": "공개 조회 함수 getPublishedQuote(shareId)를 src/lib/notion/get-published-quote.ts에 만든다. 페이지와 PDF Route Handler가 이 함수 하나를 함께 쓴다. 식별자 검사, 노션 조회, 임시 상태 차단, 유효기간 판정(src/lib/estimate/availability.ts 재사용)을 이 함수에서만 한다. 반환은 found(quote), draft, expired, notFound, error 다섯 가지다. 이 Task에서 src/app/estimate/[shareId]/page.tsx를 더미 경로에서 실데이터 경로로 바꾸고, page.tsx의 dummy-error 개발용 분기를 제거한다.",
+      "notes": "확인 필요: Q1 식별자 방식. 기본값은 노션 페이지 ID다. shrimp-rules 5-4에 적힌 식별자 미결정 표현(Q2)은 ROADMAP의 Q1을 가리키는 것으로 보고, 규칙 문서를 같은 작업에서 고친다. 순서상 이 Task는 010보다 먼저 한다. 이 Task가 끝나야 임시 견적서가 실데이터 화면에 노출되지 않는다. ROADMAP의 Task 010 중 페이지 렌더링 교체는 이 Task에서 함께 처리한다. 존재하지 않는 식별자와 마지막 문자를 바꾼 식별자는 같은 notFound 경로를 탄다. 실데이터 TC는 사용자 테스트 데이터가 있어야 실행할 수 있다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "0b1d4461-fc41-40a7-85c3-3d6a5451de32"
+        }
+      ],
+      "createdAt": "2026-10-27T13:39:28.077Z",
+      "updatedAt": "2026-10-27T14:09:48.828Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/notion/get-published-quote.ts",
+          "type": "CREATE",
+          "description": "공개 조회 함수와 ViewResult 타입",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/lib/estimate/availability.ts",
+          "type": "REFERENCE",
+          "description": "getQuoteAvailability 재사용, 판정 로직 복제 금지",
+          "lineStart": 1,
+          "lineEnd": 20
+        },
+        {
+          "path": "src/app/estimate/[shareId]/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "dummyQuoteByKey 대신 getPublishedQuote 사용, dummy-error 분기 제거",
+          "lineStart": 1,
+          "lineEnd": 80
+        },
+        {
+          "path": "src/components/estimate/quote-unavailable.tsx",
+          "type": "REFERENCE",
+          "description": "draft와 expired 안내 재사용",
+          "lineStart": 1,
+          "lineEnd": 60
+        }
+      ],
+      "implementationGuide": "1) type ViewResult = { kind: 'found'; quote: Quote } | { kind: 'draft' } | { kind: 'expired' } | { kind: 'notFound' } | { kind: 'error' }. 2) getPublishedQuote(shareId): normalizeShareId 실패 시 notFound. 3) 노션 페이지 404(object_not_found)는 notFound. 4) quote.status가 draft이면 draft를 반환하고 금액과 항목은 반환 타입에 넣지 않는다. 5) getQuoteAvailability(quote, 서울 기준 오늘 날짜)가 expired이면 expired. 6) available이면 항목까지 로드해 found. 7) 그 밖의 예외는 로그에 식별자와 오류 종류만 남기고 error. 8) page.tsx는 kind에 따라 notFound(), QuoteUnavailable(reason), EstimateDetail, error.tsx(throw) 중 하나를 고른다.",
+      "verificationCriteria": "check-all과 build 통과. 실데이터가 있으면 TC-011-01~05 실행. draft 응답 HTML에 금액과 항목 문자열이 없는지 확인(TC-011-02). 존재하지 않는 식별자와 마지막 문자를 바꾼 식별자가 not-found로 가는지 확인(TC-011-03). 루트 경로에 견적 목록이 없는지 확인(TC-011-05).",
+      "analysisResult": "Phase 3 (실제 노션 연동) 최종 목표: 노션에 입력한 견적서를 공유 링크 /estimate/[shareId]로 조회하고 PDF로 내려받는다. 웹은 조회 전용이며 로그인과 쓰기 기능은 없다. 금액은 src/lib/estimate/calculate.ts 한 곳에서만 계산하고 부가세 10%, 원 단위 정수, 부가세 내림(Q2 확정)을 따른다. 노션 모듈은 src/lib/notion/ 아래 서버 전용으로 둔다. 순서: 008, 009, 011(페이지를 실데이터 경로로 교체하고 임시와 만료 차단을 포함), 010(더미 제거와 캐싱), 012(PDF), 013(예외 안정화). 막힌 요소: NOTION_API_KEY와 NOTION_DATABASE_ID, 테스트용 노션 데이터, 미결정 Q1(식별자 기본값 노션 페이지 ID), Q3(PDF 방식과 한글 폰트), Q4(status 타입과 발행 옵션), Q9(테스트 러너). 각 Task 완료 후 중단하고 사용자 지시를 기다린다.",
+      "summary": "Task 011 구현. get-published-quote.ts에 getPublishedQuote(shareId)를 만들었다. 식별자 검사, 노션 조회, 임시 차단, 서울 기준 유효기간 판정(availability.ts 재사용)을 이 함수에서만 하며, 반환은 found, draft, expired, notFound, error 다섯 종류다. draft와 expired는 금액과 항목을 담지 않는다. page.tsx는 더미 조회를 제거하고 이 함수 결과로 분기하며, dummy-error 분기를 지웠다. shrimp-rules 5-4의 식별자 표현을 Q1 기준으로 고쳤다. 조회 중 SDK 오류 시 식별자와 오류 종류만 로그에 남긴다. 실데이터 검증: 임시 견적서는 안내 화면(200)으로 열리고 금액과 견적 번호가 HTML에 없으며, 없는 식별자, 마지막 문자를 바꾼 식별자, 잘못된 형식, 더미 키는 모두 404, 루트에는 목록이 없다(TC-011-02, 03, 05). check-all의 typecheck, lint, format과 build가 통과했다. 발행과 만료 견적서는 노션 테스트 데이터가 없어 TC-011-01, 04는 보류다. get-estimate.ts는 pages.retrieve에 하이픈 UUID를 넘기도록 고쳤다.",
+      "completedAt": "2026-10-27T14:09:48.826Z"
+    },
+    {
+      "id": "feb05665-af33-4522-8e57-5f744afb38e4",
+      "name": "Task 010: 더미 데이터를 노션 데이터로 교체",
+      "description": "Task 011 이후 남은 더미 참조를 모두 제거한다. src/lib/estimate/dummy-quotes.ts를 삭제하고 사용처가 없는지 검색으로 확인한다. 캐싱 TTL(Q5 기본값 3600초)을 적용한다. 테스트용 짧은 값은 환경변수로 받는다. 환경변수를 추가하면 src/lib/env.ts와 .env.example을 같은 작업에서 고친다.",
+      "notes": "TC-010-03(잘못된 DB ID)은 중요한 구분이 있다. 잘못된 DB ID로 Items를 쿼리하면 404가 나지만 이는 견적서 없음이 아니라 연동 오류로 분류해야 한다. 페이지 404와 Items 쿼리 404를 구분해서 처리한다. TC-010-01은 노션 금액을 바꿔야 하므로 사용자 확인 후 진행한다. 테스트용 잘못된 DB ID는 .env.local을 바꾸지 말고 별도 env 파일을 쓴다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "d298c5a9-ef11-43be-9641-d86588a23e30"
+        }
+      ],
+      "createdAt": "2026-10-27T13:39:41.456Z",
+      "updatedAt": "2026-10-27T14:12:57.231Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/estimate/dummy-quotes.ts",
+          "type": "TO_MODIFY",
+          "description": "삭제 대상",
+          "lineStart": 1,
+          "lineEnd": 130
+        },
+        {
+          "path": "src/lib/env.ts",
+          "type": "TO_MODIFY",
+          "description": "캐시 TTL 변수를 추가하는 경우에만 수정",
+          "lineStart": 1,
+          "lineEnd": 44
+        },
+        {
+          "path": ".env.example",
+          "type": "TO_MODIFY",
+          "description": "새 환경변수가 있으면 같이 추가",
+          "lineStart": 1,
+          "lineEnd": 6
+        }
+      ],
+      "implementationGuide": "1) 검색: 프로젝트 전체에서 dummy 문자열을 찾아 src 아래 참조를 모두 제거한다. 2) dummy-quotes.ts 삭제. 3) 캐시: Next 15 route segment config는 정적 분석이 필요하므로 env 값을 직접 넣을 수 있는지 Next.js 문서로 확인한 뒤 방식을 정한다. 추측으로 정하지 않는다. 4) 노션 호출 실패 시 연동 오류 화면이 나오는지 확인한다.",
+      "verificationCriteria": "check-all과 build 통과. dummy 참조가 src에 없음. TC-010-01(금액 수정 후 반영), TC-010-02(로그인 없이 접근), TC-010-03(잘못된 DB ID는 연동 오류), TC-010-04(합계 일치), TC-010-05(빌드 후 005와 006 화면 정상)를 실행하거나 보류로 기록한다.",
+      "analysisResult": "Phase 3 후반부: Task 011에서 페이지가 실데이터 경로로 바뀐 뒤, 010은 더미 파일 제거와 캐싱, 012는 PDF, 013은 예외 안정화를 맡는다. 모든 노션 호출은 src/lib/notion 아래 서버 모듈에서만 하고, 금액은 calculate.ts만 쓴다.",
+      "summary": "Task 010 구현. dummy-quotes.ts를 삭제했고 src 아래 dummy 참조가 없다. 발행자 정보는 자리표시자 값 그대로 src/lib/estimate/issuer.ts로 옮겼다(실제 값 결정 필요). 캐시는 Next 15 unstable_cache에 revalidate를 넘기는 방식으로 적용했다(공식 문서로 확인). TTL은 Q5 기본 3600초이며 NOTION_CACHE_TTL_SECONDS로 바꿀 수 있고 0이면 캐시하지 않는다. env.ts와 .env.example을 같이 고쳤다. 오류는 캐시되지 않는다. check-all과 build가 통과했다. TC-010-02: 로그인 없이 공개 접근 확인. TC-010-03: 잘못된 DB ID는 object_not_found로 기록되고 500 응답이 나며 404가 아니다. 다만 error.tsx 화면 문구는 curl 응답에 없어서 브라우저에서 확인하지 못했다. TC-010-04: CSV 항목으로 계산한 합계가 공급가액 5,000,000, 부가세 500,000, 총액 5,500,000으로 일치한다. 노션 실데이터도 CSV와 같다(읽기 전용 확인). TC-010-05: 임시 견적서 200, 없는 식별자와 더미 키 404, 루트 200. 005와 006 화면의 시각 확인은 하지 않았다. TC-010-01은 노션 금액 수정이 필요해 사용자 확인 후 진행으로 보류한다.",
+      "completedAt": "2026-10-27T14:12:57.228Z"
+    },
+    {
+      "id": "9a8d4284-991b-476e-9044-2ee7d549f9ef",
+      "name": "Task 012: PDF 생성 및 다운로드 구현",
+      "description": "Q3(PDF 방식과 한글 폰트) 확정 후 진행한다. @react-pdf/renderer 4.9.0을 정확한 버전으로 설치하고, src/components/pdf/estimate-document.tsx에 문서를 만든다. 문서는 Quote와 calculate.ts 결과만 받는다. 다운로드는 Route Handler에서 처리하며 runtime은 nodejs다. 발행 상태만 PDF를 만든다.",
+      "notes": "차단 요소: Q3 미결정이면 이 Task 전체를 보류한다. 텍스트 추출 도구(TC-012-02)는 설치 여부를 확인하고 정한다. 추측으로 고르지 않는다. TC-012-03 실패 주입은 테스트 전용 분기가 필요하며 Q9 결정 후에 한다. PDF 금액은 화면과 같은 calculate.ts 결과다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "feb05665-af33-4522-8e57-5f744afb38e4"
+        }
+      ],
+      "createdAt": "2026-10-27T13:39:41.456Z",
+      "updatedAt": "2026-10-27T14:23:24.031Z",
+      "relatedFiles": [
+        {
+          "path": "src/components/pdf/estimate-document.tsx",
+          "type": "CREATE",
+          "description": "PDF 문서 컴포넌트",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/app/estimate/[shareId]/pdf/route.ts",
+          "type": "CREATE",
+          "description": "다운로드 Route Handler",
+          "lineStart": 1,
+          "lineEnd": 1
+        },
+        {
+          "path": "src/components/estimate/pdf-download-button.tsx",
+          "type": "TO_MODIFY",
+          "description": "로딩, 실패, 비활성 상태",
+          "lineStart": 1,
+          "lineEnd": 40
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "5-5 PDF 규칙",
+          "lineStart": 149,
+          "lineEnd": 155
+        }
+      ],
+      "implementationGuide": "1) 폰트는 Q3에서 정한 파일과 등록 방식을 따른다. shrimp-rules 5-5에 따라 임의로 내려받지 않는다. 2) Route Handler: export const runtime = 'nodejs'; GET에서 getPublishedQuote(shareId)를 호출한다. found가 아니면 금액 없는 오류 응답을 낸다. 3) renderToBuffer로 PDF를 만들고 Content-Type을 application/pdf로 준다. 4) Content-Disposition 파일명은 견적서_번호.pdf를 UTF-8 인코딩한다. 5) PdfDownloadButton은 로딩과 실패 상태를 보여주고 발행 상태에서만 활성화한다.",
+      "verificationCriteria": "check-all과 build 통과. TC-012-01(application/pdf, 2xx, 파일명 형식), TC-012-05(한글 깨짐 없음), TC-012-07(임시 상태에서 버튼 비활성, 라우트 404). 나머지 TC는 도구 확인 후 실행하거나 보류로 기록한다.",
+      "analysisResult": "Phase 3 후반부: Task 011에서 페이지가 실데이터 경로로 바뀐 뒤, 010은 더미 파일 제거와 캐싱, 012는 PDF, 013은 예외 안정화를 맡는다. 모든 노션 호출은 src/lib/notion 아래 서버 모듈에서만 하고, 금액은 calculate.ts만 쓴다.",
+      "summary": "Task 012 구현. @react-pdf/renderer 4.9.0을 정확한 버전으로 설치했다. 폰트는 사용자 확정(Noto Sans KR로 통일, Arial 불가)에 따라 @expo-google-fonts/noto-sans-kr@0.4.4(OFL-1.1)에서 Regular, Bold TTF를 가져와 src/lib/pdf/fonts에 두고 라이선스 파일을 함께 넣었다. 임의 다운로드가 아니라 버전 고정 npm 패키지에서 꺼냈다. src/components/pdf/estimate-document.tsx는 Quote와 calculate.ts 결과만 쓰고, 다운로드는 runtime nodejs인 Route Handler(src/app/estimate/[shareId]/pdf/route.ts)에서 처리한다. getPublishedQuote의 found일 때만 PDF를 만들고, 임시와 만료와 잘못된 식별자는 404, 오류는 500이다. PdfDownloadButton은 로딩, 실패 상태를 보여주고 서버 Content-Disposition의 한글 파일명을 쓴다. 검증: check-all과 build 통과. 임시 자체 점검 라우트로 PDF를 만들어 application/pdf 200 응답을 확인했고 ToUnicode에 한글 20자가 모두 들어 있음을 확인했다(TC-012-05 근거). 임시 점검 라우트는 삭제했다. 실제 발행 견적서로 실라우트의 PDF 다운로드는 노션에 발행 데이터가 없어 확인하지 못했다(TC-012-01 보류). 화면에서 PDF 글자 모양을 직접 보는 확인은 PDF 렌더러 부재로 하지 못했다. 임시 상태 404 확인(TC-012-07). Vercel 배포 시 cwd 기준 폰트 경로가 번들에 포함되는지는 배포 후 확인이 필요하다.",
+      "completedAt": "2026-10-27T14:23:24.029Z"
+    },
+    {
+      "id": "5da0bf50-5192-49bc-b5fd-3cb54b952bb4",
+      "name": "Task 013: 연동 예외 처리 및 안정화",
+      "description": "노션 호출의 타임아웃, 재시도, 요청 제한, 로그 정책을 정리한다. 재시도는 SDK 옵션(maxRetries)으로 처리하고 직접 재시도 루프를 만들지 않는다. 429 최종 실패는 요청 제한 안내를, 그 밖의 연동 실패는 연동 오류 화면을 보여준다.",
+      "notes": "차단 요소: TC-013-01(타임아웃)과 TC-013-02(429)는 실제 노션 장애를 만들 수 없다. fetch를 주입하거나 테스트 전용 경로가 필요하며 Q9 결정이 필요하다. TC-013-04의 임계치는 SDK maxRetries 설정으로 검증한다. TC-013-06은 TC-009-01을 다시 실행한다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "feb05665-af33-4522-8e57-5f744afb38e4"
+        }
+      ],
+      "createdAt": "2026-10-27T13:39:41.456Z",
+      "updatedAt": "2026-10-27T14:33:10.396Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/notion/client.ts",
+          "type": "TO_MODIFY",
+          "description": "타임아웃과 재시도 상수",
+          "lineStart": 1,
+          "lineEnd": 60
+        },
+        {
+          "path": "src/lib/notion/get-published-quote.ts",
+          "type": "TO_MODIFY",
+          "description": "오류 분류 적용",
+          "lineStart": 1,
+          "lineEnd": 120
+        },
+        {
+          "path": "src/components/estimate/quote-unavailable.tsx",
+          "type": "TO_MODIFY",
+          "description": "요청 제한 안내 reason 추가",
+          "lineStart": 1,
+          "lineEnd": 60
+        }
+      ],
+      "implementationGuide": "1) client.ts의 timeoutMs와 retry 상수를 확인한다. 2) classifyNotionError(err): object_not_found는 notFound, rate_limited는 rateLimited, 나머지는 error. 3) 요청 제한 안내는 quote-unavailable.tsx의 reason에 항목을 추가하는 방식으로 한다. 4) 서버 로그는 JSON 한 줄로 오류 코드와 식별자 일부만 남긴다. 식별자 전체는 남기지 않는다.",
+      "verificationCriteria": "check-all과 build 통과. 로그에 API 키와 고객 정보가 없음(TC-013-05). 타임아웃과 429 시나리오는 주입 방식이 정해진 뒤 실행하거나 보류로 기록한다. TC-013-06 회귀 확인.",
+      "analysisResult": "Phase 3 후반부: Task 011에서 페이지가 실데이터 경로로 바뀐 뒤, 010은 더미 파일 제거와 캐싱, 012는 PDF, 013은 예외 안정화를 맡는다. 모든 노션 호출은 src/lib/notion 아래 서버 모듈에서만 하고, 금액은 calculate.ts만 쓴다.",
+      "summary": "Task 013 구현. 노션 오류를 두 갈래로 나눴다. 요청 제한(rate_limited, SDK 재시도 2회 후 최종 실패)은 rateLimited로 분류해 안내 화면(QuoteUnavailable의 rateLimited)과 PDF 429 응답을 낸다. 그 밖의 연동 실패(타임아웃, DB 설정 오류, 값 검증 실패)는 unavailable로 분류해 error.tsx 화면과 PDF 500 응답을 낸다. 재시도는 SDK 옵션 maxRetries 2로만 처리하고 직접 루프를 만들지 않았다. 서버 로그는 JSON 한 줄로 오류 코드와 식별자 앞 8자리만 남긴다. 실서버 확인: 잘못된 DB ID에서 object_not_found로 기록되고 페이지와 PDF가 모두 500이다(TC-013-03). 로그에 API 키와 고객명이 없다(TC-013-05). 회귀: 승인된 INV-2026-001 견적서가 금액과 항목을 보여주고 PDF가 application/pdf로 내려온다(TC-013-06, TC-009-01 재확인). check-all과 build 통과. 보류: 타임아웃(TC-013-01)과 429(TC-013-02)는 실제 노션 장애를 만들 수 없어 주입 경로가 필요하다. 이 경로는 Q9 결정 후 진행한다. 429 분류 로직은 SDK 오류 코드(rate_limited) 비교로 구현했으나 실서버에서는 재현하지 못했다.",
+      "completedAt": "2026-10-27T14:33:10.394Z"
     }
   ]
 }
