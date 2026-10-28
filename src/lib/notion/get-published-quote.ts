@@ -23,11 +23,13 @@ function loadEstimate(id: string) {
 export type ViewErrorReason = 'rateLimited' | 'unavailable'
 
 // 공개 조회 결과. 페이지와 PDF Route Handler가 이 함수 하나를 함께 쓴다.
-// draft와 expired는 금액과 항목을 담지 않는다.
+// draft, expired, invalid는 금액과 항목을 담지 않는다.
+// invalid는 노션 데이터가 필수 값 검증을 통과하지 못한 경우다 (실패한 필드 이름은 서버 로그에만 남긴다).
 export type ViewResult =
   | { kind: 'found'; quote: Quote }
   | { kind: 'draft' }
   | { kind: 'expired' }
+  | { kind: 'invalid' }
   | { kind: 'notFound' }
   | { kind: 'error'; reason: ViewErrorReason }
 
@@ -72,7 +74,7 @@ export async function getPublishedQuote(shareId: string): Promise<ViewResult> {
           id: id.slice(0, 8),
         })
       )
-      return { kind: 'error', reason: 'unavailable' }
+      return { kind: 'invalid' }
     }
 
     const availability = getQuoteAvailability(result.quote, todayInSeoul())

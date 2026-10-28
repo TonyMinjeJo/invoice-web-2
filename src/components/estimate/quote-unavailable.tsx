@@ -2,8 +2,12 @@ import { AlertCircle } from 'lucide-react'
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
-// 조회 불가 사유. 임시 저장(draft), 유효기간 만료(expired), 노션 요청 제한(rateLimited)을 구분한다.
-export type QuoteUnavailableReason = 'draft' | 'expired' | 'rateLimited'
+// 조회 불가 사유. 임시 저장(draft), 유효기간 만료(expired), 데이터 불완전(invalid), 노션 요청 제한(rateLimited)을 구분한다.
+export type QuoteUnavailableReason =
+  | 'draft'
+  | 'expired'
+  | 'invalid'
+  | 'rateLimited'
 
 interface QuoteUnavailableProps {
   reason: QuoteUnavailableReason
@@ -21,6 +25,10 @@ const messages: Record<
   expired: {
     title: '유효기간이 지난 견적서입니다',
     body: '최신 견적이 필요하면 담당자에게 다시 요청해 주세요.',
+  },
+  invalid: {
+    title: '견적서 정보를 표시할 수 없습니다',
+    body: '견적서 정보가 완전하지 않습니다. 담당자에게 문의해 주세요.',
   },
   rateLimited: {
     title: '요청이 많아 잠시 후 다시 시도해 주세요',

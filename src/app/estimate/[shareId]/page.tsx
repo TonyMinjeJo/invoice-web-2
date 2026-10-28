@@ -69,6 +69,7 @@ function toUnavailableReason(
 ): QuoteUnavailableReason {
   if (result.kind === 'draft') return 'draft'
   if (result.kind === 'expired') return 'expired'
+  if (result.kind === 'invalid') return 'invalid'
   return 'rateLimited'
 }
 
