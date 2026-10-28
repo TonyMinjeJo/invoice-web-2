@@ -5,6 +5,7 @@ import { unstable_cache } from 'next/cache'
 
 import { getNotionCacheTtlSeconds } from '@/lib/env'
 import { getQuoteAvailability } from '@/lib/estimate/availability'
+import { todayInSeoul } from '@/lib/estimate/date'
 import type { Quote } from '@/lib/estimate/types'
 
 import { getEstimate, normalizeShareId } from './get-estimate'
@@ -33,12 +34,7 @@ export type ViewResult =
   | { kind: 'notFound' }
   | { kind: 'error'; reason: ViewErrorReason }
 
-// 서울 기준 오늘 날짜(YYYY-MM-DD)
-function todayInSeoul(): string {
-  return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' })
-}
-
-function classifyError(error: unknown): ViewErrorReason {
+export function classifyError(error: unknown): ViewErrorReason {
   if (isNotionClientError(error) && error.code === APIErrorCode.RateLimited) {
     return 'rateLimited'
   }

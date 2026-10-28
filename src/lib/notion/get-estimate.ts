@@ -41,7 +41,7 @@ interface DataSourceIds {
 // 실패하면 다음 호출에서 다시 시도하도록 캐시를 비운다.
 let sourceIds: Promise<DataSourceIds> | null = null
 
-function resolveDataSourceIds(): Promise<DataSourceIds> {
+export function resolveDataSourceIds(): Promise<DataSourceIds> {
   if (!sourceIds) {
     sourceIds = (async () => {
       const notion = getNotionClient()

@@ -13,7 +13,10 @@ import { ThemeToggle } from '@/components/theme-toggle'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  // 서버와 첫 클라이언트 렌더를 맞추려고 initializeWithValue를 끈다 (hydration 오류 #418 방지).
+  const isMobile = useMediaQuery('(max-width: 768px)', {
+    initializeWithValue: false,
+  })
 
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">

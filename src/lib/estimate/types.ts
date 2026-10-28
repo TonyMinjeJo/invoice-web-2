@@ -26,6 +26,33 @@ export interface Quote {
   notionTotalAmount: number | null
 }
 
+// 관리자 목록의 표시 상태.
+// issued: 노션 '승인', draft: 승인이 아닌 값(대기, 거절 등), expired: 승인이지만 유효기간 경과,
+// incomplete: 필수 값이 없어 매핑하지 못한 행
+export type EstimateListStatus = 'issued' | 'draft' | 'expired' | 'incomplete'
+
+// 상태 Badge에 그대로 쓰는 문구. 색에만 의존하지 않도록 텍스트로도 구분한다.
+export type EstimateListStatusLabel =
+  | '승인'
+  | '대기'
+  | '거절'
+  | '만료됨'
+  | '정보 누락'
+
+// 관리자 목록의 한 행. 금액은 담지 않는다 (G2).
+// 정보 누락 행은 읽을 수 있는 값만 담고 나머지는 null이다.
+export interface EstimateListItem {
+  id: string // 노션 페이지 ID (하이픈 포함, 공유 링크에 쓴다)
+  quoteNumber: string | null
+  clientName: string | null
+  issueDate: string | null // YYYY-MM-DD
+  validUntil: string | null // YYYY-MM-DD
+  status: EstimateListStatus
+  statusLabel: EstimateListStatusLabel
+  // 정보 누락 행의 누락 필드 이름. 다른 상태에서는 빈 배열이다.
+  missingFields: string[]
+}
+
 // 금액 합계. 계산 함수는 Task 004에서 만들고, 이 타입은 결과 모양만 정의한다.
 export interface QuoteSummary {
   supplyAmount: number

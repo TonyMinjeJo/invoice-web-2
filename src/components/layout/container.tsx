@@ -6,10 +6,12 @@ interface ContainerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
 }
 
+// 모든 페이지가 같은 폭을 쓰도록 기본값을 sm(max-w-3xl)으로 둔다.
+// 가이드 페이지 폭에 맞추려면 이 기본값만 바꾸면 된다.
 export function Container({
   children,
   className,
-  size = 'lg',
+  size = 'sm',
 }: ContainerProps) {
   const sizes = {
     sm: 'max-w-3xl',

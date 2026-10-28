@@ -8,63 +8,76 @@
 
 ## 1. 프로젝트 개요
 
-- **목적**: 노션 견적서 DB 내용을 공유 링크로 웹에서 조회하고 PDF로 다운로드하는 **조회 전용 MVP**.
+- **목적**: 노션 견적서 DB 내용을 공유 링크로 웹에서 조회하고 PDF로 다운로드하는 **조회 전용 MVP**. MVP 이후 고도화(관리자 목록, 링크 복사, 다크 모드 점검)는 `docs/ROADMAP.md`를 따른다.
 - **원본 데이터**: 노션 데이터베이스. 입력·수정은 노션에서만 한다. 웹은 읽기만 한다.
-- **고정 스택**: Next.js 15.5.3 (App Router, Turbopack), React 19.1.0, TypeScript 5, TailwindCSS v4, shadcn/ui (`new-york`), Radix UI, lucide-react, react-hook-form, zod 4, sonner, next-themes, usehooks-ts.
-- **설치 예정 (아직 미설치)**: `@notionhq/client@5.28.0` (Phase 1), `@react-pdf/renderer@4.9.0` (Phase 3).
-- **현재 구현 상태**: `/` 홈에 안내 문구만 있다. 견적 조회 라우트, 노션 연동, PDF 기능 모두 없다.
+- **고정 스택**: Next.js 15.5.28 (App Router, Turbopack), React 19.1.10, TypeScript 5, TailwindCSS v4, shadcn/ui (`new-york`), Radix UI, lucide-react, react-hook-form, zod 4, sonner, next-themes, usehooks-ts.
+- **설치 완료 (정확한 버전 고정)**: `@notionhq/client@5.28.0`, `@react-pdf/renderer@4.9.0`.
+- **현재 구현 상태**: MVP(Task 001~017) 완료, 운영 중. 공개 견적서 조회, 노션 연동, PDF 다운로드가 구현되어 있다. 고도화는 `docs/ROADMAP.md` 기준으로 진행한다.
 
 ---
 
 ## 2. 프로젝트 구조
 
-### 2-1. 현재 존재하는 파일 (실제 확인됨)
+### 2-1. 현재 존재하는 파일 (2026-10-28 확인)
 
 ```
 src/app/
-  layout.tsx            # 루트 레이아웃 (lang="ko", ThemeProvider, Toaster)
-  page.tsx              # 홈 `/` (안내 문구)
+  layout.tsx                 # 루트 레이아웃 (lang="ko", ThemeProvider, Toaster)
+  page.tsx                   # 홈 `/` (안내 문구)
   globals.css
-  favicon.ico
+  estimate/[shareId]/
+    page.tsx                 # 공개 견적서 상세 (getPublishedQuote 사용)
+    not-found.tsx, error.tsx
+    pdf/route.ts             # PDF 다운로드 (runtime = nodejs)
 src/components/
   layout/container.tsx, header.tsx, footer.tsx
   navigation/main-nav.tsx, mobile-nav.tsx   # navItems = [] (빈 배열)
   providers/theme-provider.tsx
   theme-toggle.tsx
-  ui/                   # shadcn 컴포넌트 18종 (button, card, dialog, sheet, sonner 등)
+  estimate/                  # quote-header, quote-summary, line-items-table, pdf-download-button, quote-unavailable
+  pdf/estimate-document.tsx  # PDF 문서 (색 고정)
+  ui/                        # shadcn 컴포넌트 (button, card, dialog, sheet, sonner 등)
 src/lib/
-  utils.ts              # cn()
-  env.ts                # NODE_ENV, VERCEL_URL, NEXT_PUBLIC_APP_URL
-docs/
-  PRD.md                # ⚠️ PRD 생성 "프롬프트"만 있음. 기능 명세 아님. 상단 "확정된 전제"가 최우선 기준
-  ROADMAP.md            # 작업 목록 (체크 기준)
-  ROADMAP2.md
-  guides/               # 기술 가이드 (일부 예시는 MVP와 불일치 — 3절 참조)
-```
-
-### 2-2. 아직 없는 파일 (ROADMAP 계획, 만들 때 이 경로를 따른다)
-
-```
-src/lib/notion/client.ts              # 서버 전용 Notion 클라이언트
-src/lib/notion/estimate-schema.ts     # Zod: 노션 응답 → Estimate
-src/lib/notion/get-estimate.ts        # 공유 식별자로 1건 조회
-src/lib/estimate/calculate.ts         # 금액 계산 순수 함수 (단일 소스)
-src/components/estimate/              # 뷰어 컴포넌트 (line-items-table.tsx 등)
-src/components/pdf/estimate-document.tsx
-src/app/<견적 동적 세그먼트>/page.tsx, loading.tsx, not-found.tsx, error.tsx
+  utils.ts                   # cn()
+  env.ts                     # 노션, 발행자, 캐시 환경변수 (선택 항목 + getNotionEnv())
+  estimate/                  # types, calculate, availability, issuer
+  notion/                    # client, estimate-schema, get-estimate, get-published-quote
+  pdf/register-fonts.ts
 .env.example
+docs/
+  PRD.md                     # 확정 전제 (MVP) + 고도화 변경
+  ROADMAP.md                 # 고도화 로드맵 (Phase 5~10)
+  roadmaps/ROADMAP2_v1.md    # MVP 로드맵 (Task 001~017 완료 기록)
+  tasks/                     # Task 작업 파일 (NNN-*.md)
+  post-mvp-features.md, guides/
 ```
 
-- **경로 변경 금지**: 위 경로와 다르게 만들려면 먼저 ROADMAP에 이유를 남긴다.
+### 2-2. 고도화에서 추가된 파일 (Task 019~024 구현 완료, `docs/ROADMAP.md`)
+
+```
+src/app/admin/
+  layout.tsx, page.tsx, not-found.tsx   # 관리자 레이아웃, /admin → /admin/estimates 리디렉션
+  login/page.tsx, login/actions.ts      # 관리자 로그인 (네이티브 form + Server Action)
+  estimates/page.tsx, layout.tsx, loading.tsx, error.tsx
+src/middleware.ts            # /admin 보호 (Node 런타임, 공개 경로 제외)
+src/lib/admin/session-token.ts  # 세션 토큰 서명·검증 (HMAC-SHA256, middleware 공용)
+src/lib/admin/session.ts     # 쿠키 세션, requireAdminSession
+src/lib/estimate/date.ts     # todayInSeoul (공개 조회와 목록 공용)
+src/lib/estimate/share-link.ts       # 링크 조합, 복사 가능 상태 판정 (Task 023)
+src/lib/notion/list-estimates.ts     # 목록 조회, server-only (Task 021)
+src/components/admin/        # 관리자 헤더, 목록 표·카드, 링크 복사 버튼
+```
+
+- **경로 변경 금지**: 위 경로와 다르게 만들려면 먼저 `docs/ROADMAP.md`에 이유를 남긴다.
 - `src/hooks/`는 `components.json` alias에만 정의되어 있고 **폴더는 아직 없다**. 훅이 필요하면 이 폴더를 만든다.
 
 ---
 
 ## 3. 삭제된 파일과 무시할 예시
 
-- **삭제됨 (되살리지 않는다)**: `src/app/login/`, `src/app/signup/`, `login-form.tsx`, `signup-form.tsx`, `src/components/sections/` (hero, features, cta), `public/*.svg` 기본 에셋.
-- **무시할 예시**: `docs/guides/`의 로그인, 회원가입, 랜딩 섹션 예시는 MVP 전제(로그인 없음)와 다르다. 코드 작성에 참고하지 않는다.
-- **인증 관련 코드 금지**: 세션, 쿠키 인증, 로그인 폼, 권한 가드를 추가하지 않는다.
+- **삭제됨 (되살리지 않는다)**: `src/app/login/`, `src/app/signup/`, `login-form.tsx`, `signup-form.tsx`, `src/components/sections/` (hero, features, cta), `public/*.svg` 기본 에셋. 관리자 로그인은 `src/app/admin/login/`에 새로 만든다.
+- **무시할 예시**: `docs/guides/`의 로그인, 회원가입, 랜딩 섹션 예시는 클라이언트 로그인 없음 전제와 다르다. 코드 작성에 참고하지 않는다. 관리자 인증은 `docs/ROADMAP.md` 고도화 기술 결정(HMAC 서명 쿠키, Server Action 폼)을 따른다.
+- **인증 관련 코드는 관리자 경로에만**: 세션, 쿠키 인증, 로그인 폼, 권한 가드는 `src/app/admin/`, `src/middleware.ts`, `src/lib/admin/`에만 둔다. 공개 경로(`/estimate/*`, PDF, `/`)에는 추가하지 않는다. 인증 라이브러리는 추가하지 않는다 (G1).
 
 ---
 
@@ -155,8 +168,8 @@ Notion DB
 
 ### 5-6. 조회 전용 원칙
 
-- **MUST NOT**: 견적서를 생성, 수정, 삭제하는 UI, Server Action, API를 만들지 않는다.
-- **MUST NOT**: 폼을 만들지 않는다. 입력 기능이 없으므로 react-hook-form은 현재 쓸 곳이 없다.
+- **MUST NOT**: 견적서를 생성, 수정, 삭제하는 UI, Server Action, API를 만들지 않는다. 관리자 목록도 읽기 전용이다.
+- **MUST NOT**: 폼을 만들지 않는다. 예외는 관리자 로그인 폼 1개(`src/app/admin/login/`, 네이티브 `<form>` + Server Action)다. react-hook-form은 쓰지 않는다.
 
 ---
 
@@ -165,7 +178,7 @@ Notion DB
 ### 6-1. Next.js 15
 
 - **MUST**: `params`와 `searchParams`는 `Promise`다. 사용 전에 `await` 한다.
-- **MUST**: Next.js 버전(15.5.3 고정 vs 15.5.28 패치)은 **Q11 미결정**. 결정 전에는 `package.json`의 `next` 버전을 바꾸지 않는다.
+- **확정 (Q11)**: Next.js 15.5.28을 쓴다 (커밋 `8e83ebf`에서 확정). `package.json`의 `next` 버전을 임의로 바꾸지 않는다.
 
 ### 6-2. shadcn/ui
 
@@ -191,8 +204,8 @@ Notion DB
 
 ### 7-1. 작업 순서
 
-1. **작업 전**: `docs/ROADMAP.md`에서 해당 항목(예: 2-1, 1-4)과 **DoD(완료 기준)**를 읽는다.
-2. **미결정 항목 확인**: 작업이 Q 항목(Q2~Q16)에 걸리면 9절 결정 트리를 따른다.
+1. **작업 전**: MVP 작업은 `docs/roadmaps/ROADMAP2_v1.md`, 고도화 작업은 `docs/ROADMAP.md`에서 해당 Task(예: Task 019)와 **DoD(완료 기준)**를 읽는다.
+2. **미결정 항목 확인**: 작업이 MVP Q 항목 또는 고도화 G 항목에 걸리면 9절 결정 트리를 따른다.
 3. **구현**: 5절과 6절 규칙을 따른다.
 4. **검사**: `npm run check-all` → `npm run build` 순서로 실행하고 **둘 다 통과**해야 완료로 본다.
 5. **로드맵 갱신**: 완료한 항목은 `docs:update-roadmap` 스킬로 `- [x]`로 바꾼다. 요구 ID 추적표(5절)의 상태도 같이 갱신한다.
@@ -212,16 +225,16 @@ Notion DB
 
 한 파일을 바꾸면 아래 파일도 **같은 작업에서** 확인한다.
 
-| 변경 내용                | 함께 확인하거나 수정할 파일                                                       |
-| ------------------------ | --------------------------------------------------------------------------------- |
-| 노션 환경변수 추가       | `src/lib/env.ts`, `.env.example`, ROADMAP 0-6 / 4-5                               |
-| 노션 DB 속성 변경        | `src/lib/notion/estimate-schema.ts` (Zod 매핑만 수정), ROADMAP 1-2                |
-| 금액 규칙 변경           | `src/lib/estimate/calculate.ts` 한 곳만 수정 → 뷰어와 PDF 금액 대조 (ROADMAP 3-8) |
-| 내비게이션 항목 추가     | `main-nav.tsx`의 `navItems`와 `mobile-nav.tsx` 둘 다 확인                         |
-| 새 페이지 라우트 추가    | 해당 `loading.tsx`, `not-found.tsx`, `error.tsx` 필요 여부 확인, ROADMAP 체크     |
-| 페이즈 완료              | ROADMAP 체크 표시, `check-all`, `build`                                           |
-| 레이아웃 메타데이터 변경 | `layout.tsx`의 `metadata`, 페이지별 `title` (ROADMAP 2-7)                         |
-| shadcn 컴포넌트 추가     | `components.json` 설정과 일치 확인, 생성된 `ui/` 파일만 추가                      |
+| 변경 내용                | 함께 확인하거나 수정할 파일                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| 노션 환경변수 추가       | `src/lib/env.ts`, `.env.example`, ROADMAP2_v1 Task 002·016 (고도화 환경변수는 `docs/ROADMAP.md` Task 020·023) |
+| 노션 DB 속성 변경        | `src/lib/notion/estimate-schema.ts` (Zod 매핑만 수정), ROADMAP2_v1 Task 009                                   |
+| 금액 규칙 변경           | `src/lib/estimate/calculate.ts` 한 곳만 수정 → 뷰어와 PDF 금액 대조 (ROADMAP2_v1 TC-010-04)                   |
+| 내비게이션 항목 추가     | `main-nav.tsx`의 `navItems`와 `mobile-nav.tsx` 둘 다 확인                                                     |
+| 새 페이지 라우트 추가    | 해당 `loading.tsx`, `not-found.tsx`, `error.tsx` 필요 여부 확인, ROADMAP 체크                                 |
+| 페이즈 완료              | ROADMAP 체크 표시, `check-all`, `build`                                                                       |
+| 레이아웃 메타데이터 변경 | `layout.tsx`의 `metadata`, 페이지별 `title` (ROADMAP2_v1 Task 001·007)                                        |
+| shadcn 컴포넌트 추가     | `components.json` 설정과 일치 확인, 생성된 `ui/` 파일만 추가                                                  |
 
 ---
 
@@ -230,25 +243,25 @@ Notion DB
 위에서부터 순서대로 적용한다.
 
 1. **PRD 확정 전제와 충돌하는가?** (`docs/PRD.md` 상단 "확정된 전제")
-   → 전제를 따른다. 로그인, 관리 화면, 견적 승인·서명, 이메일 발송은 **항상 제외**다.
+   → 전제를 따른다. 견적 승인·서명, 이메일 발송은 **항상 제외**다. 관리자 로그인과 읽기 전용 관리 목록은 고도화 전제(`docs/ROADMAP.md`)에서만 허용하며, 관리자 경로(`/admin`) 밖에는 두지 않는다.
 2. **ROADMAP의 미결정 Q 항목이 작업을 막는가?**
    → 추측으로 구현하지 않는다. 막힌 기능만 보류하고 나머지를 끝낸다. 완료 보고에 막힌 Q 번호를 적는다.
-3. **버전이 충돌하는가?** (예: Next.js 15.5.3 vs 15.5.28)
+3. **버전이 충돌하는가?** (예: 문서와 package.json의 Next.js 버전 불일치)
    → `package.json`을 바꾸지 않는다. Q11로 보고한다.
 4. **기존 코드와 `docs/guides/` 예시가 충돌하는가?**
    → 현재 코드와 PRD 전제를 따른다. 예시는 무시한다.
 5. **새 라이브러리나 새 폴더가 필요한가?**
    → ROADMAP에 명시되어 있으면 추가한다. 없으면 ROADMAP에 먼저 항목을 기록하고 진행하거나, 보류한다.
 6. **메뉴 항목이 필요한가?**
-   → PRD에 메뉴 구조가 없으므로(Q1) `navItems`는 빈 배열로 둔다. 메뉴를 임의로 추가하지 않는다.
+   → PRD에 메뉴 구조가 없으므로(Q1) `navItems`는 빈 배열로 둔다. 메뉴를 임의로 추가하지 않는다. 관리자 메뉴는 `src/app/admin/layout.tsx` 안에만 둔다.
 
 ---
 
 ## 10. 금지 사항
 
 - ❌ 견적서 생성, 수정, 삭제 UI나 API 추가
-- ❌ 로그인, 회원가입, 세션, 인증 가드 추가
-- ❌ 발행자 관리 화면, 승인·서명, 이메일 발송 추가
+- ❌ 로그인, 회원가입, 세션, 인증 가드를 관리자 경로(`/admin`) 밖에 추가
+- ❌ 관리 화면에 편집 기능, 승인·서명, 이메일 발송 추가 (읽기 전용 관리 목록은 허용)
 - ❌ `NEXT_PUBLIC_` 접두사가 붙은 노션 토큰 또는 DB ID
 - ❌ 클라이언트 컴포넌트에서 노션 모듈 import
 - ❌ 컴포넌트나 PDF 안에서 금액 계산 (부가세 10% 이외의 세율 포함)
