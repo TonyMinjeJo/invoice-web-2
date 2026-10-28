@@ -28,18 +28,18 @@ MVP 전제 중 아래 항목이 고도화에서 바뀝니다. 원래 PRD 전제�
 
 ## 현재 상태 기준선 (2026-10-28)
 
-| 영역        | 현재 상태                                                                                                                                                                                          | 고도화 대응                                                            |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| MVP         | Phase 1~4 완료, 운영 배포 (Task 001~017)                                                                                                                                                           | 기준선 (`docs/roadmaps/ROADMAP2_v1.md`)                                |
-| 공개 견적서 | `/estimate/[shareId]`: 노션 페이지 ID, 상태 판정, 1시간 캐시, noindex, PDF 라우트                                                                                                                  | 링크 복사의 대상 (변경 최소화)                                         |
-| 다크 모드   | `next-themes` ThemeProvider (`defaultTheme="system"`), 헤더 `ThemeToggle` (라이트·다크·시스템), `globals.css`의 `.dark` 토큰. Task 001에서 `<html class="dark">` 전환 확인                         | 전 화면 점검과 보완 (Task 024)                                         |
-| 대비 측정   | Task 007에서 샘플 화면만 추정 측정. 정식 측정은 없음                                                                                                                                               | Task 024에서 정식 측정                                                 |
-| 노션 연동   | `src/lib/notion/`: 서버 전용 클라이언트, 데이터 소스 ID 캐시, Zod 매핑, 항목 페이지네이션                                                                                                          | 목록 조회 함수 추가 (Task 021)                                         |
-| 상태 규칙   | 노션 `상태` 옵션 `승인` = 발행, 그 밖 (`대기`, `거절`) = 임시 (`estimate-schema.ts`)                                                                                                               | 목록 상태 표시에 같은 규칙 사용. ROADMAP2_v1의 '발행' 표기는 과거 표기 |
-| 관리자 화면 | 없음                                                                                                                                                                                               | Task 019                                                               |
-| 인증        | 없음 (`shrimp-rules.md` §3 금지)                                                                                                                                                                   | Task 020 (Task 018 이후)                                               |
-| 환경변수    | `NOTION_API_KEY`, `NOTION_DATABASE_ID`, `ISSUER_NAME`, `ISSUER_CONTACT`, `NOTION_CACHE_TTL_SECONDS` (`.env.example`에 있음). `NEXT_PUBLIC_APP_URL`은 `env.ts`에만 선언되고 `.env.example`에는 없음 | 관리자 변수 추가 (Task 020), 기준 주소 추가 (Task 023)                 |
-| 버전        | `package.json` 기준 Next.js 15.5.28, React 19.1.10, `@notionhq/client` 5.28.0, `@react-pdf/renderer` 4.9.0. `CLAUDE.md`와 `shrimp-rules.md`는 Task 018에서 15.5.28로 정정                          | 문서 정정 (Task 018)                                                   |
+| 영역        | 현재 상태                                                                                                                                                                                                                                                             | 고도화 대응                                                            |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| MVP         | Phase 1~4 완료, 운영 배포 (Task 001~017)                                                                                                                                                                                                                              | 기준선 (`docs/roadmaps/ROADMAP2_v1.md`)                                |
+| 공개 견적서 | `/estimate/[shareId]`: 노션 페이지 ID, 상태 판정, 1시간 캐시, noindex, PDF 라우트                                                                                                                                                                                     | 링크 복사의 대상 (변경 최소화)                                         |
+| 다크 모드   | `next-themes` ThemeProvider (`defaultTheme="system"`), 헤더 `ThemeToggle` (라이트·다크·시스템), `globals.css`의 `.dark` 토큰. Task 001에서 `<html class="dark">` 전환 확인                                                                                            | 전 화면 점검과 보완 (Task 024)                                         |
+| 대비 측정   | Task 007에서 샘플 화면만 추정 측정. 정식 측정은 없음                                                                                                                                                                                                                  | Task 024에서 정식 측정                                                 |
+| 노션 연동   | `src/lib/notion/`: 서버 전용 클라이언트, 데이터 소스 ID 캐시, Zod 매핑, 항목 페이지네이션                                                                                                                                                                             | 목록 조회 함수 추가 (Task 021)                                         |
+| 상태 규칙   | 노션 `상태` 옵션 `승인` = 발행, 그 밖 (`대기`, `거절`) = 임시 (`estimate-schema.ts`)                                                                                                                                                                                  | 목록 상태 표시에 같은 규칙 사용. ROADMAP2_v1의 '발행' 표기는 과거 표기 |
+| 관리자 화면 | 없음                                                                                                                                                                                                                                                                  | Task 019                                                               |
+| 인증        | 없음 (`shrimp-rules.md` §3 금지)                                                                                                                                                                                                                                      | Task 020 (Task 018 이후)                                               |
+| 환경변수    | `NOTION_API_KEY`, `NOTION_DATABASE_ID`, `ISSUER_NAME`, `ISSUER_CONTACT`, `NOTION_CACHE_TTL_SECONDS` (`.env.example`에 있음). `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `NEXT_PUBLIC_APP_URL`은 `env.ts`와 `.env.example`에 모두 선언됨 (고도화 Task 020·023에서 추가) | 관리자 변수 추가 (Task 020), 기준 주소 추가 (Task 023)                 |
+| 버전        | `package.json` 기준 Next.js 15.5.28, React 19.1.10, `@notionhq/client` 5.28.0, `@react-pdf/renderer` 4.9.0. `CLAUDE.md`와 `shrimp-rules.md`는 Task 018에서 15.5.28로 정정                                                                                             | 문서 정정 (Task 018)                                                   |
 
 ## 요구사항 추적표
 
@@ -256,14 +256,14 @@ MVP 절차(`docs/roadmaps/ROADMAP2_v1.md`)를 따르고, 고도화에서 추가�
   - [x] TC-024-07 [모바일] 390×844 다크 모드에서 가로 스크롤 없음, 헤더 토글 탭 가능
   - [x] TC-024-08 [회귀] 테마를 바꿔도 PDF 내용과 금액이 TC-012-02 기준과 같음
 
-### Phase 10: QA 및 배포
+### Phase 10: QA 및 배포 ✅
 
 - **목표**: 관리자 흐름과 공개 흐름이 운영 데이터에서 함께 동작함을 확인하고 배포합니다.
 - **완료 기준 (DoD)**: 운영 URL에서 로그인 → 목록 → 링크 복사 → 공개 상세 → PDF 다운로드가 모두 통과하고, 비로그인 목록 노출이 없습니다. `npm run check-all`, `npm run build` 통과.
 - **산출물**: 운영 배포 URL, 검증 결과 (작업 파일).
 - **의존성**: Phase 5~9.
 
-- **Task 025: 고도화 통합 검증과 배포**
+- ✅ **Task 025: 고도화 통합 검증과 배포** - 완료
   - 진행 상태 (2026-10-28): 운영 환경변수 3개 등록 확인, 운영 배포 완료 (`https://invoice-web-2.vercel.app`). 로컬 `npm run build` 통과, 메인 코드 형식 검사 통과.
   - 문서 갱신 완료: `docs/guides/share-link-issuing.md` 1-1절(목록 복사), `docs/post-mvp-features.md` 3번 상태.
   - TC 진행 (2026-10-28): TC-025-01~07 전부 통과. TC-025-05의 운영 PDF 버튼 클릭까지 확인했습니다. 큰 금액 케이스는 로컬에서 확인했습니다.
